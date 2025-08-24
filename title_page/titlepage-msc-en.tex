@@ -1,0 +1,84 @@
+\documentclass[12pt,twoside,a4paper]{article}
+% compile this with XeLaTeX. Then, view PDF.
+
+\usepackage{fontspec,newunicodechar}
+\defaultfontfeatures{Ligatures=TeX}
+
+\usepackage{graphicx}
+\usepackage[vmargin = 25mm, hmargin = 20mm, bindingoffset=10mm]{geometry}
+
+\newfontfamily\arial{arial.ttf}
+
+\linespread{1.5}
+\setlength{\parindent}{0mm}
+
+% ------------------------------------------------------
+
+\newcommand{\discipline}{Data Science}
+\renewcommand{\title}{Keystroke Sounds as a Threat: \\ Acoustic Keyboard Classification with Neural Networks}
+\newcommand{\supervisor}{Adam Żychowski, PhD Eng}
+% \newcommand{\spec}{Artificial Intelligence}
+\renewcommand{\year}{2025}
+
+\newcommand{\authori}{Julia Przybytniowska} %BSc Eng
+\newcommand{\albumi}{313523}
+
+
+
+\begin{document}
+
+\pagestyle{empty}
+
+
+\begin{center}
+\includegraphics[scale=1.]{img/wut}
+\vspace{40pt}
+
+
+\includegraphics[scale=1.]{img/master} % or master
+
+{ \arial
+in the field of study~\discipline 
+\\
+% and specialisation~\spec
+
+\vspace{30pt}
+{\arial \large \title}
+
+
+\vspace{40pt}
+
+{\arial \huge \authori }
+
+\vspace{5pt}
+
+student record book number \albumi
+
+
+\vspace{40pt}
+
+thesis supervisor \\
+{\arial \supervisor}
+
+
+\vfill
+ 
+WARSAW \year \\
+}
+\end{center}
+
+
+%\newpage
+%\null
+%
+%\vfill
+%
+%\begin{center}
+%\begin{tabular}[t]{ccc}
+%............................................. & \hspace*{100pt} & .............................................\\
+%supervisor's signature & \hspace*{100pt} & author's signature
+%\end{tabular}
+%\end{center}
+
+
+\end{document}
