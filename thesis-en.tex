@@ -15,6 +15,8 @@
 \usepackage{multirow}
 \usepackage{arydshln}
 
+\usepackage{tcolorbox}
+
 \usepackage{url}
 \usepackage{amsmath, amsfonts, amsthm, latexsym} % MOSTLY MATHEMATICAL SYMBOLS
 
@@ -231,7 +233,7 @@ Beyond accuracy, the work investigates how training data, model scale, and noise
 \end{center}
 
 
-\noindent \textbf{S\l{}owa kluczowe:} akustyczne ataki bocznokana\l{}owe, konwolucja, mechanizmy uwagi, sieci neuronowe, rozpoznawanie naci\'sni\k{e}\c{c} klawiszy, prywatno\'s\'c danych, uczenie maszynowe
+\noindent \textbf{S\l{}owa kluczowe:} akustyczne ataki bocznokana\l{}owe, konwolucja, mechanizmy uwagi, sieci neuronowe, rozpoznawanie naci\'sni\k{e}\' c klawiszy, prywatno\'s\'c danych, uczenie maszynowe
 
 W d\k{a}\.zeniu do wzmocnienia bezpiecze\'nstwa cyfrowego badania koncentruj\k{a} si\k{e} g\l{}\'ownie na szyfrowaniu, biometrii i odpornych systemach. Urz\k{a}dzenia wci\k{a}\.z jednak emituj\k{a} subtelne sygna\l{}y, kana\l{}y boczne, kt\'ore mog\k{a} zosta\'c wykorzystane przez atakuj\k{a}cych, a d\' zwi\k{e}ki naci\'sni\k{e}{\' c} klawiszy stanowi\k{a} w tym kontek\'scie szczeg\'olnie powa\.zne zagro\.zenie.
 
@@ -361,11 +363,11 @@ To begin the process of frequency-based analysis, the signal is typically transf
     \centering
     \includegraphics[width=0.9\linewidth]{img_related_work/waveform.png}
     \includegraphics[width=0.9\linewidth]{img_related_work/log_mel_spectrogram.png}
-    \caption{An example of log-mel spectrogram for given key press.}
+    \caption{An example of log-mel spectrogram for a given key press.}
     \label{fig:spectogram}
 \end{figure}
 
-After transforming a signal into the frequency domain, researchers often proceed to generate a spectrogram, a visual representation of the signal's frequency content over time. On a spectrogram, presented in the Figure \ref{fig:spectogram}, the horizontal axis represents time, the vertical axis represents frequency, and the intensity or color of each point on the graph represents the amplitude or strength of a specific frequency at a particular time. The spectrogram allows us to track how frequencies evolve over time, providing insight into transient events. For more precise analysis, a mel-spectrogram is often used. The mel spectrogram is a refined version of the traditional spectrogram that uses a mel scale designed to mimic the frequency sensitivity of human hearing. The mel scale compresses higher frequencies and expands lower frequencies to better match the way people perceive sound, making it often more effective. To streamline the analysis, researchers typically extract features such as Mel-Frequency Cepstral Coefficients (MFCC) from the mel-spectrogram. This process involves logarithmically transforming the signal's power spectrum to compress a range of values, then applying a discrete cosine transform (DCT) to reduce the number of coefficients while retaining the most important features. These coefficients provide a compact representation of the signal's frequency content and are immune to background noise, making them particularly suitable for tasks in noisy environments.
+After transforming a signal into the frequency domain, researchers often proceed to generate a spectrogram, a visual representation of the signal's frequency content over time. On a spectrogram, presented in Figure \ref{fig:spectogram}, the horizontal axis represents time, the vertical axis represents frequency, and the intensity or color of each point on the graph represents the amplitude or strength of a specific frequency at a particular time. The spectrogram allows us to track how frequencies evolve over time, providing insight into transient events. For more precise analysis, a mel-spectrogram is often used. The mel spectrogram is a refined version of the traditional spectrogram that uses a mel scale designed to mimic the frequency sensitivity of human hearing. The mel scale compresses higher frequencies and expands lower frequencies to better match the way people perceive sound, making it often more effective. To streamline the analysis, researchers typically extract features such as Mel-Frequency Cepstral Coefficients (MFCC) from the mel-spectrogram. This process involves logarithmically transforming the signal's power spectrum to compress a range of values, then applying a discrete cosine transform (DCT) to reduce the number of coefficients while retaining the most important features. These coefficients provide a compact representation of the signal's frequency content and are immune to background noise, making them particularly suitable for tasks in noisy environments.
 
 Depending on the approach taken, solutions can be generally divided into two groups: those that use classical machine learning techniques and those that utilize deep learning architectures.
 
@@ -375,7 +377,7 @@ In classical machine learning methods, researchers typically extract features, s
 
 However, deep learning methods have gained popularity because of their ability to automatically learn feature representations directly from raw audio data. Recurrent Neural Networks (RNNs), introduced by \textit{\cite{rnn1}} and \textit{\cite{rnn2}}, are often used for sequential data processing, making them effective at capturing temporal dependencies in audio signals. These networks excel at modeling the evolution of features over time, which is essential for tasks such as speech recognition and side-channel acoustic attacks.
 
-Alternatively, when audio data is converted to a visual format, such as a spectrogram or mel-spectrogram, the problem comprises to an image classification task. This allows the use of convolutional neural networks (CNNs) (\textit{\cite{cnn}}), or vision transformers (\textit{\cite{vit}}), which are proficient at extracting both temporal and spectral features, so that their combinations are often considered the best solutions in this area.
+Alternatively, when audio data is converted to a visual format, such as a spectrogram or mel-spectrogram, the problem becomes an image classification task. This allows the use of convolutional neural networks (CNNs) (\textit{\cite{cnn}}), or vision transformers (\textit{\cite{vit}}), which are proficient at extracting both temporal and spectral features, so that their combinations are often considered the best solutions in this area.
 
 Frequency-based methods have proven to be a successful solution against acoustic side-channel attacks, making it possible to extract sensitive information from subtle sound patterns. The following pages present and describe key studies that expose the application and effectiveness of these methods in real-world scenarios.\\
 
@@ -411,13 +413,13 @@ To automatically detect and isolate keystrokes, the authors normalized the ampli
 
 Once a keystroke event was detected, a wavelength segment of 100 ms or shorter was extracted, if possible, and passed on for classification. This method effectively distinguishes between individual keystrokes, focusing on the louder peaks of the keystroke, However, by using this method, the authors significantly reduced the expected search space, ignoring the possibility of entering a string of special characters.
 
-Several spectral features were taken into experiments to acquire most informative and compact audio features. That includes FFT coefficients, cepstral coefficients, and Mel-Frequency Cepstral Coefficients (MFCC), where the last method was ultimately selected as consistently outperformed other features.
+Several spectral features were taken into experiments to acquire the most informative and compact audio features. That includes FFT coefficients, cepstral coefficients, and Mel-Frequency Cepstral Coefficients (MFCC), where the last method was ultimately selected as it consistently outperformed other features.
 
-Once the features are extracted, the next phase of the methodology focuses on classification. In the device profiling scenario, the study uses a k-nearest neighbor (k-NN) classifier, where k is set to 10, to predict the type of keyboard used by the victim based on the extracted features. The approach aims to match the victim's keyboard with the keyboard contained in the set of known keystroke hits. To classify keystrokes, the study evaluated several machine learning algorithms, including logistic regression, linear discriminant analysis (LDA), support vector machines (SVM) and random forests (RF). Among these classifiers, using 10-fold cross-validation, each consisting of 10 probes of each of 26 a-z keys, logistic regression outperformed the others in the precision, after an extensive grid search. Classification performance is measured using top-1 and top-k accuracy rates, denoting the percentage of cases in which the true class appears in the first n predictions of the fitted model.
+Once the features are extracted, the next phase of the methodology focuses on classification. In the device profiling scenario, the study uses a k-nearest neighbor (k-NN) classifier, where k is set to 10, to predict the type of keyboard used by the victim based on the extracted features. The approach aims to match the victim's keyboard with the keyboard contained in the set of known keystroke hits. To classify keystrokes, the study evaluated several machine learning algorithms, including logistic regression, linear discriminant analysis (LDA), support vector machines (SVM) and random forests (RF). Among these classifiers, using 10-fold cross-validation, each consisting of 10 probes of each of 26 a-z keys, logistic regression outperformed the others in the precision, after an extensive grid search. Classification performance is measured using top-1 and top-$k$ accuracy rates, denoting the percentage of cases in which the true class appears in the first n predictions of the fitted model.
 
 The results of the classification experiments show that the attack methodology is highly effective across the different attack scenarios. In the Complete Profiling scenario, where the attacker has access to detailed information about the victim’s device and typing style, the accuracy of keystroke classification is notably high. Even in the more challenging Model Profiling scenario, where the attacker has no prior knowledge of the victim’s device or typing style, the methodology achieves a substantial improvement over random guessing, with top-1 accuracy increasing by up to 312\%. These results highlight the danger of the attack success, even when the attacker has limited access to computational resources. \\
 
-One year later \textit{\cite{anand2018keyboard}} presented a similar study, focusing on detecting random passwords and PIN codes with noisy background. The authors utilized classical machine learning methods to classify alphanumeric keystrokes (a-z and 0-9), aiming to identify the most effective feature extraction techniques and machine learning algorithms. To achieve this, they evaluated performance using 10-fold cross-validation on a dataset using following algorithms: Simple Logistic Regression, Multinomial Logistic Regression, J48, Random Forest, SMO and Linear Nearest Neighbor Search, with results summarized in the Figure \ref{fig:anand2018}.
+One year later \textit{\cite{anand2018keyboard}} presented a similar study, focusing on detecting random passwords and PIN codes with noisy background. The authors utilized classical machine learning methods to classify alphanumeric keystrokes (a-z and 0-9), aiming to identify the most effective feature extraction techniques and machine learning algorithms. To achieve this, they evaluated performance using 10-fold cross-validation on a dataset using following algorithms: Simple Logistic Regression, Multinomial Logistic Regression, J48, Random Forest, SMO and Linear Nearest Neighbor Search, with results summarized in Figure \ref{fig:anand2018}.
 
 \begin{figure}[h!]
     \centering
@@ -445,7 +447,7 @@ Actual typing behavior often results in an unbalanced data set because some keys
 
 The researchers divided the problem into two components: keystroke detection, aimed at predicting whether any key was pressed in a given signal frame, and keystroke classification, focused on determining which specific key was clicked. Detection was essential to this architecture because of their approach to data processing, which included signal windows that did not contain keystrokes. A 5-fold cross-validation was used for the detection task, prioritizing true-positive and true-negative indicators over accuracy to better reflect the practical application of the model.
 
-The system employed a multi-modal architecture that could take any combination of four feature types as input: FFT coefficients, MFCC, raw audio, and raw motion data, presented in the Figure \ref{fig:cnn2019-label}. Using convolutional neural networks (CNNs), the researchers processed the extracted audio features, raw audio, and motion data. Each input type passed through a unique convolutional architecture comprising a mix of one-dimensional convolutional layers, max pooling layers, and residual blocks. After passing through the convolutional layers, the outputs were flattened into one-dimensional arrays, concatenated, and fed into dense layers for final processing.
+The system employed a multi-modal architecture that could take any combination of four feature types as input: FFT coefficients, MFCC, raw audio, and raw motion data, presented in Figure \ref{fig:cnn2019-label}. Using convolutional neural networks (CNNs), the researchers processed the extracted audio features, raw audio, and motion data. Each input type passed through a unique convolutional architecture comprising a mix of one-dimensional convolutional layers, max pooling layers, and residual blocks. After passing through the convolutional layers, the outputs were flattened into one-dimensional arrays, concatenated, and fed into dense layers for final processing.
 
 
 \begin{figure}[h!]
@@ -468,7 +470,7 @@ The system employed a multi-modal architecture that could take any combination o
   \label{fig:enter-label}
 \end{figure}
 
-For the keystroke classification component, the researchers implemented a recurrent neural network (RNN)-based classification model to correct systematic errors made by the CNN, shown in the Figure \ref{fig:rnn2019-label}. The authors noted that the CNN component frequently exhibited three key types of errors: it confused infrequent keystrokes with frequent classes, misclassified characters that were physically close on the keyboard, and keys that were physically similar in size (e.g., backspace and enter). These patterns suggested that the CNN was primarily learning a physical model of keystroke dynamics. To address these systematic errors and misspellings, the researchers used an architecture inspired by Google's Neural Machine Translation (NMT) model \cite{nmt}, effectively defining the task as a translation problem.
+For the keystroke classification component, the researchers implemented a recurrent neural network (RNN)-based classification model to correct systematic errors made by the CNN, shown in Figure \ref{fig:rnn2019-label}. The authors noted that the CNN component frequently exhibited three key types of errors: it confused infrequent keystrokes with frequent classes, misclassified characters that were physically close on the keyboard, and keys that were physically similar in size (e.g., backspace and enter). These patterns suggested that the CNN was primarily learning a physical model of keystroke dynamics. To address these systematic errors and misspellings, the researchers used an architecture inspired by Google's Neural Machine Translation (NMT) model \cite{nmt}, effectively defining the task as a translation problem.
 
 The RNN architecture consisted of three main components: an encoder, a decoder and an attention module, in which each block of the architecture used LSTM (Long Short-Term Memory) cells, introduced by \cite{lstm}. The encoder contained five LSTM layers, while the decoder consisted of six LSTM layers. The bottom layer of the encoder was a bidirectional LSTM, allowing the model to use a right-to-left hierarchy in the input data. In addition, the residual connections between the LSTM layers facilitated the training of both shallow and deep layers, allowing deeper architectures to be created without compromising learning performance.
 
@@ -489,7 +491,7 @@ For pre-processing, the study followed previous work that identified a reasonabl
 
 The evaluation used two metrics: character error rate (CER) and accuracy. CER, specifically based on Levenshtein distances, calculated the minimum number of insertions, substitutions and deletions required to transform a predicted result into a reference transcript normalized by the reference length. Accuracy was used for direct comparisons with other solutions, which is quite difficult due to the differing characteristics of the experiments. Interestingly, while previous work suggested that MFCC were the most efficient method for feature extraction, this study found that the FFT transformation provided better performance in their dataset.
 
-The architecture used in this study was adapted from the literature on speech recognition \cite{speech2016}, designed as a complex system to predict keystroke sequences directly from the input audio, which schema is presented in the Figure \ref{fig:speech2016arch}.
+The architecture used in this study was adapted from the literature on speech recognition \cite{speech2016}, designed as a complex system to predict keystroke sequences directly from the input audio, which schema is presented in Figure \ref{fig:speech2016arch}.
 
 \begin{figure}[h!]
     \centering
@@ -534,7 +536,7 @@ ConvMixer was trained using the Adam optimizer (first presented by \textit{\cite
 In addition, the researchers conducted experiments tuning the VGG16 and ResNet18 models on the same data set. Tuning ResNet18 resulted in an average accuracy of 88.35\%, while tuning VGG16 achieved a slightly lower average accuracy of 85.92\%. Thus, ConvMixer definitely outperformed CNN-only based architectures in this classification problem. \\
 
 
-Last but not least, a study closely related to research conducted in this thesis is titled “A Practical Deep Learning-Based Acoustic Side Channel Attack on Keyboards” by \textit{\cite{coatnet2023}}. The work introduces a novel technique for implementing deep learning models with layers of self-attention to perform acoustic side channel attacks. The study focused on 36 laptop keyboard keys (covering the digits 0-9 and the letters a-z) and started with a single recording of each key pressed 25 times in a row. The authors developed a function to isolate individual keystrokes from these recordings, which, despite the challenges of the recordings made by Zoom, was able to determine an effective threshold for segmenting keystrokes.
+Last but not least, a study closely related to research conducted in this thesis is titled “A Practical Deep Learning-Based Acoustic Side Channel Attack on Keyboards” by \textit{\cite{CoAtNet2023}}. The work introduces a novel technique for implementing deep learning models with layers of self-attention to perform acoustic side channel attacks. The study focused on 36 laptop keyboard keys (covering the digits 0-9 and the letters a-z) and started with a single recording of each key pressed 25 times in a row. The authors developed a function to isolate individual keystrokes from these recordings, which, despite the challenges of the recordings made by Zoom, was able to determine an effective threshold for segmenting keystrokes.
 
 The authors again used mel-spectrograms to convert audio signals into $64 \times 64$ images, whose transformation involved applying a fast Fourier transform (FFT) to the recordings and summing the frequency coefficients to calculate the signal energy. In addition, data augmentation strategies were applied, including randomly shifting the time of the signals by up to 40\% in any direction and introducing occlusions in the spectrograms by randomly selecting 10\% of the time and frequency axes and replacing them with the mean value of the spectrogram. With these methods, the researchers enlarged the dataset, gently generalizing it and thus significantly improving the model's performance.
 
@@ -542,15 +544,15 @@ The researchers used the CoAtNet model, a hybrid architecture that combines conv
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\textwidth]{img_related_work/coatnet.png}
+    \includegraphics[width=\textwidth]{img_related_work/CoAtNet.png}
     \caption{The CoAtNet architecture.}
-    \footnotesize{Sourced from original paper \cite{coatnet}.}
-    \label{fig:coatnet}
+    \footnotesize{Sourced from original paper \cite{CoAtNet}.}
+    \label{fig:CoAtNet}
 \end{figure}
 
-The CoAtNet architecture, which schema is demonstrated in Figure \ref{fig:coatnet}, integrates convolutional layers and attention layers in a structured manner to harness the strengths of both. The convolutional layers capture translation equivariance, effectively modeling local patterns, while the attention layers introduce adaptive global feature representation, enhancing the model's capacity to generalize. This combination is achieved by summing a global static convolution kernel with the adaptive attention matrix, either before or after the Softmax normalization. The resulting attention weight is influenced both by the convolutional kernel and the input-adaptive components, ensuring minimal additional computational overhead. The architecture leverages pre-normalization relative attention for improved efficiency.
+The CoAtNet architecture, which schema is demonstrated in Figure \ref{fig:CoAtNet}, integrates convolutional layers and attention layers in a structured manner to harness the strengths of both. The convolutional layers capture translation equivariance, effectively modeling local patterns, while the attention layers introduce adaptive global feature representation, enhancing the model's capacity to generalize. This combination is achieved by summing a global static convolution kernel with the adaptive attention matrix, either before or after the Softmax normalization. The resulting attention weight is influenced both by the convolutional kernel and the input-adaptive components, ensuring minimal additional computational overhead. The architecture leverages pre-normalization relative attention for improved efficiency.
 
-To train the CoAtNet model, the researchers used the Adam optimizer with a cross entropy loss function as in the original CoAtNet paper (\textit{\cite{coatnet2021}}). They have experimented with different learning rates, number of epochs and data splitting strategies, comparing stratified and random splits to achieve performance optimization.
+To train the CoAtNet model, the researchers used the Adam optimizer with a cross entropy loss function as in the original CoAtNet paper (\textit{\cite{CoAtNet}}). They have experimented with different learning rates, number of epochs and data splitting strategies, comparing stratified and random splits to achieve performance optimization.
 
 The experiments were conducted in two different recording environments. First, keystrokes were captured using an iPhone placed on the left side of the laptop on a folded piece of microfiber cloth (to limit any vibration). In the second setting, referred to as 'data recorded by Zoom,' keystrokes were recorded using the Zoom video conferencing app's built-in audio recording function. In this scenario, the victim participated in a Zoom meeting using the MacBook's built-in microphone array, with noise suppression set to the lowest possible level.
 
@@ -591,12 +593,12 @@ Each recording is stored in a separate .wav file, named using a key-<keyname>-<i
 
 
 \subsection{A Practical Deep Learning-Based Acoustic Side Channel Attack on Keyboards – Associated Dataset \protect\footnotemark}
-\label{practicatDataset}
+\label{practicalDataset}
 
 \footnotetext{Available on GitHub: \url{https://github.com/JBFH-Dev/Keystroke-Datasets}}
 
 
-As part of the work presented in the article "A Practical Deep Learning-Based Acoustic Side Channel Attack on Keyboards" (\textit{\cite{coatnet2023}}), the authors published a dataset containing keyboard sound recordings captured under two different conditions.
+As part of the work presented in the article "A Practical Deep Learning-Based Acoustic Side Channel Attack on Keyboards" (\textit{\cite{CoAtNet2023}}), the authors published a dataset containing keyboard sound recordings captured under two different conditions.
 
 The first subset was created using the built-in recording function of the Zoom application. Keystroke sounds were captured during a simulated video call session, emulating a scenario in which an acoustic leak might occur on a conference platform. The second subset was recorded locally using a smartphone placed next to the MacBook Pro, laid on a microfiber cloth in order to minimize resonance and undesired noise.
 
@@ -667,7 +669,7 @@ As part of this experimental direction, many deep learning architectures have be
 % The models considered in this track include:
 % \begin{itemize}
 %     \item Swin Transformer (\cite{swin}), which introduces hierarchical self-attention through local windowing, making it efficient for capturing localized acoustic features.
-%     \item CoAtNet (\cite{coatnet}), a hybrid architecture that combines convolutional layers with attention modules, benefiting from both local inductive biases and global context modeling.
+%     \item CoAtNet (\cite{CoAtNet}), a hybrid architecture that combines convolutional layers with attention modules, benefiting from both local inductive biases and global context modeling.
 %     \item MOAT (\cite{MOAT}), which builds on the efficiency of convolutional layers while introducing learnable, spatially dynamic attention mechanisms.
 % \end{itemize}
 
@@ -710,12 +712,12 @@ Accurate segmentation and preprocessing of audio signals are key steps in creati
 
 \subsection{Keystroke Segmentation}
 
-The raw recordings, originating from the datasets described in Sections~\ref{practicatDataset},~\ref{mkaDataset}, and~\ref{customDataset}, each contain a predefined number of consecutive keystrokes per file. To extract individual events, an energy-based segmentation algorithm is applied. The signal is transformed using short-time Fourier transform (STFT), and an energy profile is computed by summing magnitudes across all frequency bins per frame. This profile is min-max normalized to the range [0, 1].
+The raw recordings, originating from the datasets described in Sections~\ref{practicalDataset},~\ref{mkaDataset}, and~\ref{customDataset}, each contain a predefined number of consecutive keystrokes per file. To extract individual events, an energy-based segmentation algorithm is applied. The signal is transformed using short-time Fourier transform (STFT), and an energy profile is computed by summing magnitudes across all frequency bins per frame. This profile is min-max normalized to the range [0, 1].
 
 Potential key presses are identified as peaks exceeding a dynamic threshold, with nearby peaks clustered to remove duplicates caused by residual echoes or overlapping energy spikes. An adaptive strategy adjusts the threshold iteratively to match the expected number of key presses and prepares the segmentation to account for any human errors where the actual number of keystrokes differs from the expected count. Around each final timestamp, a fixed-size window is extracted, filtered for overlap, and trimmed for silence. The resulting segments are randomly split into train, validation, and test sets in a 70/15/15 ratio.
 
 \begin{algorithm}[H]
-\caption{Keystroke Detection and Segmentation Pipeline}
+\caption{Keystroke Detection and Segmentation Pipeline.}
 \begin{algorithmic}[1]
 \REQUIRE Audio signal $x(t)$, expected key count $K$, initial threshold $\theta_0$, adjustment step $\delta$, max retries $R$
 \ENSURE List of segmented keystroke signals $\mathcal{S}$
@@ -817,7 +819,7 @@ The latest architectures combine the advantages of both paradigms, creating hybr
 
 Swin Transformer (\cite{swin}) introduces an innovative hierarchical architecture that adapts the Transformer model to vision-related tasks, eliminating the inefficiency of global self-attention. Unlike the standard Vision Transformer (ViT) (\cite{vit}), which computes attention for all patches globally — leading to high quadratic computational complexity — Swin Transformer restricts self-attention to local, non-overlapping windows. This design significantly reduces the computational load, making it more feasible for high-resolution images.
 
-A key innovation in the Swin Transformer is the use of Shifted Window Self-Attention (SW-MSA). By cyclically shifting the window division between successive layers, the model enables connections between windows without significantly increasing computational complexity. This mechanism facilitates efficient spatial interaction and enhances the model’s ability to capture long-range dependencies, which are typically limited in standard window-based approaches. The schema of the attention mechanism is presented in the Figure~\ref{fig:swin}, which shows (a) the hierarchical architecture of Swin Transformer with patch merging between stages, and (b) two successive Swin Transformer blocks alternating between regular (W-MSA) and shifted (SW-MSA) window-based multi-head self-attention.
+A key innovation in the Swin Transformer is the use of Shifted Window Self-Attention (SW-MSA). By cyclically shifting the window division between successive layers, the model enables connections between windows without significantly increasing computational complexity. This mechanism facilitates efficient spatial interaction and enhances the model’s ability to capture long-range dependencies, which are typically limited in standard window-based approaches. The schema of the attention mechanism is presented in Figure~\ref{fig:swin}, which shows (a) the hierarchical architecture of Swin Transformer with patch merging between stages, and (b) two successive Swin Transformer blocks alternating between regular (W-MSA) and shifted (SW-MSA) window-based multi-head self-attention.
 
 
 \begin{figure}
@@ -834,9 +836,9 @@ The Swin Transformer architecture was tested in this work in multiple configurat
 
 \subsection{CoAtNet}
 
-CoAtNet (Convolution and Attention Network), presented in \cite{coatnet}, is a hybrid vision model designed to combine the structural efficiency of convolutional networks with the dynamic modeling power of Transformer-based self-attention. Rather than treating convolution and attention as separate paradigms, CoAtNet organizes them in a synergistic sequence—allocating convolution to early stages for spatial generalization and attention to later stages for high-level semantic reasoning.
+CoAtNet (Convolution and Attention Network), presented in \cite{CoAtNet}, is a hybrid vision model designed to combine the structural efficiency of convolutional networks with the dynamic modeling power of Transformer-based self-attention. Rather than treating convolution and attention as separate paradigms, CoAtNet organizes them in a synergistic sequence—allocating convolution to early stages for spatial generalization and attention to later stages for high-level semantic reasoning.
 
-The architecture consists of five progressive stages, with the first three stages implemented using Mobile Inverted Bottleneck Convolution (MBConv) blocks and the final two with Transformer blocks as shown in the figure \ref{fig:coatnet}. MBConv blocks are known from efficient architectures like MobileNetV2 (\cite{mobilenetv2}) and EfficientNet (\cite{efficientnet}), and they employ depthwise separable convolutions—a factorized variant of standard convolutions that separates channel-wise spatial filtering from cross-channel mixing. Each MBConv block includes an expansion projection, a depthwise convolution, a squeeze-and-excitation mechanism (\cite{squeeze}) for channel recalibration, and a residual connection to facilitate gradient flow.
+The architecture consists of five progressive stages, with the first three stages implemented using Mobile Inverted Bottleneck Convolution (MBConv) blocks and the final two with Transformer blocks as shown in Figure \ref{fig:CoAtNet}. MBConv blocks are known from efficient architectures like MobileNetV2 (\cite{mobilenetv2}) and EfficientNet (\cite{efficientnet}), and they employ depthwise separable convolutions—a factorized variant of standard convolutions that separates channel-wise spatial filtering from cross-channel mixing. Each MBConv block includes an expansion projection, a depthwise convolution, a squeeze-and-excitation mechanism (\cite{squeeze}) for channel recalibration, and a residual connection to facilitate gradient flow.
 
 
 The depthwise separable convolution within MBConv allows for substantial computational savings. Specifically, a depthwise convolution applies a single spatial filter per input channel, preserving spatial locality at minimal cost, while the subsequent pointwise (1x1) convolution captures inter-channel dependencies. The inclusion of squeeze-and-excitation operations further refines the activations by adaptively recalibrating channel-wise responses based on global context.
@@ -880,9 +882,11 @@ Weight decay was included as a regularization technique to mitigate overfitting 
 
 To evaluate model performance, the \texttt{CrossEntropyLoss} function was used as the primary objective metric during training and validation phases. This loss function is particularly well-suited for multi-class classification problems, as it encourages the model to assign high probability to the correct class while penalizing confident misclassifications.
 
-Beyond the training loss, a broad spectrum of top-k accuracy metrics was reported to assess predictive quality. These included Top-1, Top-2, Top-3, Top-5, and Top-10 accuracy, providing a more comprehensive understanding of how well the model ranked the correct class among its predictions. Such granularity was essential in cases where the exact top prediction was incorrect, but the correct class still appeared among the higher-ranked outputs.
+Beyond the training loss, a broad spectrum of top-$k$ accuracy metrics was reported to assess predictive quality. These included Top-1, Top-2, Top-3, Top-5, and Top-10 accuracy, providing a more comprehensive understanding of how well the model ranked the correct class among its predictions. Such granularity was essential in cases where the exact top prediction was incorrect, but the correct class still appeared among the higher-ranked outputs.
 
-To refine model outputs and assess their semantic alignment with human expectations, an additional post-processing step was introduced using Large Language Models (LLMs). Models such Gemini 2.5 Pro and GPT OSS 120b, were used to clean up raw predictions, resolving inconsistencies and standardizing outputs across various samples, to get the sense of the input.
+To refine model outputs and assess their semantic alignment with human expectations, an additional post-processing step was introduced using Large Language Models (LLMs). Models such Gemini 2.5 Pro \footnotemark and GPT OSS 120b (\cite{gpt-oss}), were used to clean up raw predictions, resolving inconsistencies and standardizing outputs across various samples, to get the sense of the input.
+
+\footnotetext{Documentation available at: \url{https://cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/2-5-pro}}
 
 Finally, a Levenshtein distance metric (\cite{levenshtein}) was employed to capture the precise number of insertions, deletions, or substitutions required to transform raw output and model's predicted sequence into the corresponding ground truth. This metric provided a fine-grained assessment of output fidelity that goes beyond traditional categorical accuracy, offering insights into how closely the predicted output matches the expected result in practical applications.
 
@@ -903,7 +907,7 @@ Table \ref{tab:swin_transformer_architectures} summarizes the evaluated Swin Tra
 
 \begin{table}[h!]
 \centering
-\caption{Summary of evaluated Swin Transformer architectures}
+\caption{Summary of evaluated Swin Transformer architectures.}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lcccccc}
 \hline
@@ -923,12 +927,12 @@ Table \ref{tab:swin_transformer_architectures} summarizes the evaluated Swin Tra
 
 Following the Swin Transformer experiments, we evaluated several CoAtNet configurations. Each model integrates convolutional and Transformer-based blocks in a multi-stage hierarchy. The hidden dimension at each stage defines feature size, while the number of blocks determines the stage depth. Kernel sizes for convolutional layers, attention head sizes, and expansion ratios for bottleneck and SE modules were kept constant across all stages based on standard defaults. Spatial resolution is progressively reduced between stages, with channel dimensions correspondingly increased to maintain representational capacity.
 
-The evaluated architectures and their stage-wise configurations are summarized in Table \ref{tab:coatnet_architectures}, including key hyperparameters.
+The evaluated architectures and their stage-wise configurations are summarized in Table \ref{tab:CoAtNet_architectures}, including key hyperparameters.
 
 
 \begin{table}[h!]
 \centering
-\caption{Summary of evaluated CoAtNet architectures}
+\caption{Summary of evaluated CoAtNet architectures.}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lccccc}
 \hline
@@ -941,7 +945,7 @@ The evaluated architectures and their stage-wise configurations are summarized i
 4 & [2, 4, 12, 2] & [4, 8, 16, 32] & 133.6 & 2.96 \\
 \hline
 \end{tabular}
-\label{tab:coatnet_architectures}
+\label{tab:CoAtNet_architectures}
 \end{adjustbox}
 \end{table}
 
@@ -952,7 +956,7 @@ MOAT supports both local and global attention. In this study, each architecture 
 
 \begin{table}[h!]
 \centering
-\caption{Summary of evaluated MOAT architectures}
+\caption{Summary of evaluated MOAT architectures.}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{lccccc}
 \hline
@@ -976,23 +980,21 @@ The controlled experiments were conducted on clean, publicly available recording
 
 Controlled experiments reveal clear differences in predictive performance between architectures, parameter scales, and datasets. Table \ref{tab:alphanumeric_clean_results} summarizes results achieved by models trained exclusively on alphanumeric key presses a-z0-9. Accross them CoAtNet consistently outperformed other models, with its medium- and large-scale variants (architectures 3 and 4) achieving accuracy equal to 92.21\% in all test recordings. MOAT also showed competitive performance, with several configurations, one exceeding 88\% accuracy. Among them, MOAT with local attention achieved higher accuracy than MOAT with global attention. However, Swin Transformer lagged significantly behind, achieving accuracy in the range of 38–55\%, indicating limited suitability for this classification task in clean conditions.
 
-Importantly, the \texttt{Practical dataset} with only alphanumeric keys has also been used in prior research, making it the only directly comparable benchmark. In this setting, training jointly with other datasets led to \texttt{state-of-the-art} performance, with CoAtNet-3 reaching 95.23\% accuracy.
-
-When comparing architectures within each model family, clear patterns emerge. In the case of CoAtNet, there is a clear correlation between model size and predictive performance: medium- and large-scale architectures (3 and 4) consistently outperform smaller variants, confirming that increasing channel depth and width contributes to higher accuracy. In contrast, MOAT shows relatively uniform performance across all its architectures, with even the smallest configuration achieving accuracy levels comparable to the largest. This suggests that for this task, scaling the MOAT architecture has a limited impact on overall predictive ability. Similarly, Swin Transformer consistently shows poor performance regardless of architecture size, indicating that increasing depth or embedding dimension does not significantly improve its suitability for classifying keystrokes in clean conditions.
+Importantly, the \textit{Practical dataset} (described in the Section \ref{practicalDataset}) with only alphanumeric keys has also been used in prior research, making it the only directly comparable benchmark. In this setting, training jointly with other datasets led to \texttt{state-of-the-art} performance, with CoAtNet-3 reaching 95.23\% accuracy.
 
 
 \begin{table}[h!]
 \centering
-\caption{Performance of all models on the publicly available datasets with alphanumeric keys.}
+\caption{Test performance of all models on publicly available datasets with alphanumeric keys.}
 \begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{l|c|c|c|cccc}
+\begin{tabular}{c|c|c|c|cccc}
 \hline
 \textbf{Model} & \textbf{Architecture} & \textbf{Window} & \textbf{Loss} & \multicolumn{4}{c}{\textbf{Accuracy [\%]}} \\
 \cline{5-8}
        &   \textbf{No.}  &   \textbf{Size}   &   & \textbf{All} & \textbf{Practical} & \textbf{MKA} & \textbf{Noiseless}  \\
 \hline
-CoAtNet & 3 & - & 0.0028 & 92.21 & 95.23 & 83.89 & 97.06  \\
-CoAtNet & 4 & - & 0.0027 & 90.65 & 91.94 & 85.00 & 96.08  \\
+CoAtNet & 3 & - & 0.0028 & \textbf{92.21} & \textbf{95.23} & 83.89 & \textbf{97.06}  \\
+CoAtNet & 4 & - & 0.0027 & 90.65 & 91.94 & \textbf{85.00} & 96.08  \\
 MOAT & 2 & 16 & 0.0082 & 88.16 & 91.39 & 79.44 & 92.16  \\
 MOAT & 4 & 8 & 0.0042 & 86.60 & 88.61 & 80.00 & 91.18  \\
 MOAT & 1 & 8 & 0.0060 & 86.29 & 86.67 & 82.78 & 91.18  \\
@@ -1014,12 +1016,12 @@ SwinTransformer & 1 & 4 & 0.0218 & 38.47 & 43.89 & 27.78 & 38.24  \\
 \label{tab:alphanumeric_clean_results}
 \end{table}
 
-A similar pattern was observed for models trained using all keys on the Mac keyboard (Table \ref{tab:all_keys_clean_results}). CoAtNet again achieved the best results, with architectures 3 and 4 achieving accuracy above 90\% and standing out in the recordings from Noiseless dataset (98.31\% and 93.22\%, respectively). MOAT ranked just behind, with its medium and large variants maintaining an accuracy of 86-–90\% and showing resilience across all subsets. Swin Transformer remained the weakest architecture, achieving an overall accuracy of less than 59\%. Compared to the alphanumeric case, accuracy decreased slightly (approximately 0–-2\% for the strongest models), which is expected due to the increased difficulty of the task. The dataset of all keys contains a larger number of classes, which makes classification more difficult, but both CoAtNet and MOAT maintained high performance, highlighting their scalability to more complex label spaces.
+When comparing architectures within each model family, clear patterns emerge. In the case of CoAtNet, there is a clear correlation between model size and predictive performance: medium- and large-scale architectures (3 and 4) consistently outperform smaller variants, confirming that increasing channel depth and width contributes to higher accuracy. In contrast, MOAT shows relatively uniform performance across all its architectures, with even the smallest configuration achieving accuracy levels comparable to the largest. This suggests that for this task, scaling the MOAT architecture has a limited impact on overall predictive ability. Similarly, Swin Transformer consistently shows poor performance regardless of architecture size, indicating that increasing depth or embedding dimension does not significantly improve its suitability for classifying keystrokes in clean conditions
 
 
 \begin{table}[h!]
 \centering
-\caption{Performance of all models on the publicly available datasets with all keys.}
+\caption{Test performance of all models on publicly available datasets with all keys.}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{c|c|c|c|cccc}
 \hline
@@ -1027,32 +1029,35 @@ A similar pattern was observed for models trained using all keys on the Mac keyb
 \cline{5-8}
        &   \textbf{No.}  & \textbf{Size}&        & \textbf{All} & \textbf{Practical} & \textbf{MKA} & \textbf{Noiseless}  \\
 \hline
-CoAtNet & 3 & - & 0.0024 & 90.94 & 93.33 & 85.08 & 98.31  \\
-CoAtNet & 4 & - & 0.0020 & 90.82 & 93.06 & 87.12 & 93.22  \\
+CoAtNet & 3 & - & 0.0024 & \textbf{90.94} & \textbf{93.33} & 85.08 & \textbf{98.31}  \\
+CoAtNet & 4 & - & 0.0020 & 90.82 & 93.06 & \textbf{87.12} & 93.22  \\
 MOAT & 3 & - & 0.0034 & 89.65 & 92.22 & 84.07 & 95.76  \\
 MOAT & 1 & - & 0.0037 & 87.71 & 89.44 & 85.42 & 88.14  \\
 MOAT & 3 & 16 & 0.0078 & 86.03 & 88.89 & 79.66 & 93.22  \\
 MOAT & 1 & 8 & 0.0043 & 85.77 & 86.94 & 83.73 & 87.29  \\
 MOAT & 2 & 16 & 0.0044 & 84.48 & 84.72 & 82.03 & 89.83  \\
 CoAtNet & 1 & - & 0.0044 & 83.31 & 84.44 & 79.32 & 89.83  \\
+MOAT & 4 & 8 & 0.0036 & 82.15 & 81.39 & 81.02 & 87.29 \\
+MOAT & 2 & - & 0.0039 & 81.63 & 80.56 & 80.68 & 87.29 \\
 CoAtNet & 2 & - & 0.0069 & 78.78 & 80.56 & 76.27 & 79.66  \\
+MOAT & 4 & - & 0.0140 & 61.84 & 59.72 & 67.46 & 54.24  \\
 SwinTransformer & 3 & 8 & 0.0101 & 58.47 & 57.50 & 53.56 & 73.73  \\
 SwinTransformer & 2 & 4 & 0.0118 & 54.59 & 52.22 & 55.25 & 60.17  \\
 SwinTransformer & 4 & 16 & 0.0131 & 47.50 & 68.33 & 49.49 & 54.24  \\
 SwinTransformer & 1 & 4 & 0.0168 & 39.07 & 43.33 & 37.29 & 30.51  \\
-
+% (one more MOAT to be added - its running) \\
 \hline
 \end{tabular}
 \end{adjustbox}
 \label{tab:all_keys_clean_results}
 \end{table}
 
-To provide a more detailed understanding of model performance, top-k accuracy metrics were calculated for the best-performing models on both key sets. The inclusion of top-$k$ metrics provides an additional layer of insight into model performance beyond the standard top-1 accuracy. As shown in Tables \ref{tab:alphanumeric_top_k_accuracies} and \ref{tab:all_keys_top_k_accuracies}, both CoAtNet and MOAT reach over 97\% top-3 accuracy and exceed 99\% top-10 accuracy on both datasets. This indicates that while the exact keystroke may not always be ranked first, the correct class is almost always present within the first few predictions. From a practical standpoint, this drastically reduces the space of possible keystrokes when attempting to reconstruct typed input, as the candidate set can be narrowed down to only a handful of keys with very high certainty. Consequently, these results highlight that even in the presence of classification uncertainty, the models remain highly effective for keystroke inference tasks.
+A similar pattern was observed for models trained using all keys on the Mac keyboard (Table \ref{tab:all_keys_clean_results}). CoAtNet again achieved the best results, with architectures 3 and 4 achieving accuracy above 90\% and standing out in the recordings from Noiseless dataset (98.31\% and 93.22\%, respectively). MOAT ranked just behind, with its medium and large variants maintaining an accuracy of 86-90\% and showing resilience across all subsets. Swin Transformer remained the weakest architecture, achieving an overall accuracy of less than 59\%. Compared to the alphanumeric case, accuracy decreased slightly (approximately 0–2\% for the strongest models), which is expected due to the increased difficulty of the task. The dataset of all keys contains a larger number of classes, which makes classification more difficult, but both CoAtNet and MOAT maintained high performance, highlighting their scalability to more complex label spaces.
 
 
 \begin{table}[h!]
 \centering
-\caption{Top-$k$ accuracies of the best models on the \textbf{alphanumeric} dataset.}
+\caption{Top-$k$ accuracies of the best models using alphanumeric keys.}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{c|c|c|cccccc}
 \hline
@@ -1060,19 +1065,20 @@ To provide a more detailed understanding of model performance, top-k accuracy me
 \cline{4-9}
  & \textbf{No.} & \textbf{Size} & \textbf{Top-1} & \textbf{Top-2} & \textbf{Top-3} & \textbf{Top-4} & \textbf{Top-5} & \textbf{Top-10} \\
 \hline
-CoAtNet & 3 & - & 92.21 & 96.57 & 97.82 & 98.29 & 98.75 & 99.53 \\
-MOAT & 2 & 16 & 88.16 & 95.48 & 97.04 & 97.66 & 98.75 & 99.69 \\
-SwinTransformer & 4 & 16 & 62.15 & 77.10 & 84.27 & 88.16 & 90.50 & 97.51 \\
+CoAtNet & 3 & - & \textbf{92.21} & \textbf{96.57} & \textbf{97.82} & \textbf{98.29} & \textbf{98.75} & 99.53 \\
+MOAT & 2 & 16 & 88.16 & 95.48 & 97.04 & 97.66 & \textbf{98.75} & \textbf{99.69} \\
+SwinTransformer & 3 & 8 & 55.30 & 71.81 & 78.50 & 84.27 & 88.47 & 95.02 \\
 \hline
 \end{tabular}
 \end{adjustbox}
 \label{tab:alphanumeric_top_k_accuracies}
 \end{table}
 
+To provide a more detailed understanding of model performance, top-$k$ accuracy metrics were calculated for the best-performing models on both key sets. The inclusion of top-$k$ metrics provides an additional layer of insight into model performance beyond the standard top-1 accuracy. As shown in Tables \ref{tab:alphanumeric_top_k_accuracies} and \ref{tab:all_keys_top_k_accuracies}, both CoAtNet and MOAT reach over 97\% top-3 accuracy and exceed 99\% top-10 accuracy on both datasets. This indicates that while the exact keystroke may not always be ranked first, the correct class is almost always present within the first few predictions. From a practical standpoint, this drastically reduces the space of possible keystrokes when attempting to reconstruct typed input, as the candidate set can be narrowed down to only a handful of keys with very high certainty. Consequently, these results highlight that even in the presence of classification uncertainty, the models remain highly effective for keystroke inference tasks.
 
 \begin{table}[h!]
 \centering
-\caption{Top-$k$ accuracies of the best models on the \textbf{all keys} dataset.}
+\caption{Top-$k$ accuracies of the best models all keys.}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{c|c|c|cccccc}
 \hline
@@ -1080,82 +1086,88 @@ SwinTransformer & 4 & 16 & 62.15 & 77.10 & 84.27 & 88.16 & 90.50 & 97.51 \\
 \cline{4-9}
  & \textbf{No.} & \textbf{Size} & \textbf{Top-1} & \textbf{Top-2} & \textbf{Top-3} & \textbf{Top-4} & \textbf{Top-5} & \textbf{Top-10} \\
 \hline
-CoAtNet & 3 & - & 90.94 & 97.02 & 98.19 & 98.58 & 98.84 & 99.48 \\
-MOAT & 3 & - & 89.65 & 96.38 & 98.06 & 98.45 & 98.58 & 99.61 \\
-SwinTransformer & 4 & 16 & 64.55 & 79.69 & 85.64 & 90.56 & 92.88 & 97.67 \\
+CoAtNet & 3 & - & \textbf{90.94} & \textbf{97.02} & \textbf{98.19} & \textbf{98.58} & \textbf{98.84} & 99.48 \\
+MOAT & 3 & - & 89.65 & 96.38 & 98.06 & 98.45 & 98.58 & \textbf{99.61} \\
+SwinTransformer & 3 & 8 & 58.47 & 74.26 & 80.47 & 84.48 & 87.32 & 93.79 \\
 \hline
 \end{tabular}
 \end{adjustbox}
 \label{tab:all_keys_top_k_accuracies}
 \end{table}
 
-In addition to the top-$k$ results, training histories and confusion matrices were analyzed to provide further insight into convergence and error patterns. The training curves \ref{fig:training_histories} indicate that, in the initial epochs, the models primarily adapted to the training subset, while validation accuracy gradually approached training performance over time. The use of the Cosine Annealing scheduler for learning rate facilitated sufficient exploration during optimization while maintaining stable convergence.
+
 
 \begin{figure}[h!]
 \centering
 
 \begin{subfigure}{\linewidth}
     \centering
-    \begin{minipage}{0.49\linewidth}
+    \begin{minipage}{0.45\linewidth}
         \centering
         \includegraphics[width=\linewidth]{img_results/loss_alphanum.png}
     \end{minipage}
     \hfill
-    \begin{minipage}{0.49\linewidth}
+    \begin{minipage}{0.45\linewidth}
         \centering
         \includegraphics[width=\linewidth]{img_results/acc_alphanum.png}
     \end{minipage}
-    \caption{}
+    \caption{Alphanumeric keys}
 \end{subfigure}
 \vspace{0.5em}
 \begin{subfigure}{\linewidth}
     \centering
-    \begin{minipage}{0.49\linewidth}
+    \begin{minipage}{0.45\linewidth}
         \centering
         \includegraphics[width=\linewidth]{img_results/loss_all.png}
     \end{minipage}
     \hfill
-    \begin{minipage}{0.49\linewidth}
+    \begin{minipage}{0.45\linewidth}
         \centering
         \includegraphics[width=\linewidth]{img_results/acc_all.png}
     \end{minipage}
-    \caption{}
+    \caption{All keys}
 \end{subfigure}
 
-\caption{Training histories of the best CoAtNet architectures on: (a) alphanumeric keys, (b) all keys.}
+\caption{Training histories of the best CoAtNet-3 architectures on different sets of keys.}
 \label{fig:training_histories}
 \end{figure}
 
-Confusion matrices (Figure \ref{fig:confusion_matrices}), presented for the best-performing models on both key sets, confirm that an accuracy level of around 90\% corresponds to strong predictive performance. While occasional misclassifications occur, these are largely restricted to acoustically similar keys or those located adjacently on a keyboard layout, which aligns with expected error patterns. Detailed confusion matrices for individual public datasets are provided in the Appendix for completeness.
+In addition to the top-$k$ results, training histories and confusion matrices were analyzed to provide further insight into convergence and error patterns. The training curves presented in Figure  \ref{fig:training_histories} indicate that, in the initial epochs, the models primarily adapted to the training subset, while validation accuracy gradually approached training performance over time. The use of the Cosine Annealing scheduler for learning rate facilitated sufficient exploration during optimization while maintaining stable convergence.
 
 
 \begin{figure}[h!]
   \centering
-  \begin{minipage}{0.49\linewidth}
-      \centering
-      \includegraphics[width=\linewidth]{img_results/cm_all_coatnet_alphanum.png}
-      \subcaption{}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.49\linewidth}
-      \centering
-      \includegraphics[width=\linewidth]{img_results/cm_all_coatnet_all.png}
-      \subcaption{}
-  \end{minipage}
-  \caption{Confusion matrices of the best CoAtNet models on: (a) alphanumeric keys, (b) all keys.}
-  \label{fig:confusion_matrices}
+  \includegraphics[width=0.65\linewidth]{img_results/cm_all_CoAtNet_alphanum.png}
+  \caption{Confusion matrix of the best CoAtNet-3 model on alphanumeric keys.}
+  \label{fig:confusion_matrix_alphanum}
 \end{figure}
 
-To further assess the practical usefulness of the models in real text reconstruction, predictions were evaluated using the Levenshtein distance. This metric quantifies the edit distance between predicted and ground-truth sequences, providing a direct measure of how closely the reconstructed text matches the intended input. In addition, LLM-based correction was utilised on raw model outputs, to see if this approach could enhance performance. This step simulates realistic post-processing, where an LLM leverages linguistic context to reduce residual errors and improve readability of reconstructed text.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{img_results/cm_all_CoAtNet_all.png}
+  \caption{Confusion matrix of the best CoAtNet-3 model on all keys.}
+  \label{fig:confusion_matrix_all}
+\end{figure}
 
+Confusion matrices (Figures \ref{fig:confusion_matrix_alphanum} and \ref{fig:confusion_matrix_all}), presented for the best-performing models on both key sets, confirm that an accuracy level of around 90\% corresponds to strong predictive performance. While occasional misclassifications occur, these are largely restricted to acoustically similar keys or those located adjacently on a keyboard layout, which aligns with expected error patterns. In practice, errors most often arise between keys with similar shapes and sizes or those positioned close to one another—for instance, \texttt{(k, j)} or consecutive numbers when trained on alphanumeric keys only, and \texttt{(j, u)}, \texttt{(a, s)}, \texttt{(l, k)}, or modifier pairs such as \texttt{(left control, left option)} in the full-key setup. Detailed confusion matrices for individual public datasets are provided in the Appendix for completeness.
+
+\subsection*{Text Reconstruction}
+
+To further assess the practical usefulness of the models in real text reconstruction, predictions were evaluated using the Levenshtein distance. This metric quantifies the edit distance between predicted and ground-truth sequences, providing a direct measure of how closely the reconstructed text matches the intended input. In addition, LLM-based correction was utilised on raw model outputs, to see if this approach could enhance performance. This step simulates realistic post-processing, where an LLM leverages linguistic context to reduce residual errors and improve readability of reconstructed text.
+\newpage
 For this evaluation, three sentences were selected to test the models’ ability to reconstruct natural text:
 \begin{enumerate}
   \item \textit{Artificial Intelligence has been part of our world for 75 years now.}
   \item \textit{In order to succeed, we must first believe that we can.}
   \item \textit{Life is a journey, not a destination.}
 \end{enumerate}
+The characters required to form each sentence were randomly sampled from the test dataset, and the corresponding keystroke recordings were fed into the models. This ensured that the evaluation was grounded in actual acoustic samples rather than synthetic input.
 
 When models trained with full set of keys were assessed, the full set of characters required to recreate each sentence was included, preserving case sensitivity. The only simplification applied was that modifier keys (e.g., Shift) were assumed to affect only the immediately following character, since detecting exact release times is difficult in practice. In contrast, evaluation on the alphanumeric-only dataset simplified the problem: sentences were transformed into lists of lowercase words without punctuation, reflecting the reduced output space of these models.
+
+The LLM prompts used for correction were tailored to the two prediction scenarios. For alphanumeric-only outputs, the LLM received a list of lowercase keypresses grouped into words, with instructions to correct obvious substitutions while preserving both order and length of the sequence. For all-key outputs, the input included alphanumeric and special keys (e.g., \texttt{Shift}, \texttt{Caps}, \texttt{Ctrl}), and the LLM was guided to reconstruct coherent sentences while respecting key semantics. Crucially, the prompts framed the inputs explicitly as predicted keypresses, not free text, and instructed the LLM to treat them as noisy model outputs to be repaired. This context ensured that the LLM corrected systematic misclassifications in a way consistent with keystroke-level predictions, rather than performing generic spell-checking.
+
+
 
 As an example, for the first sentence, including all keys on the keyboard, the best models predicted:
 
@@ -1167,14 +1179,13 @@ As an example, for the first sentence, including all keys on the keyboard, the b
 
 These examples show that while the overall structure of the sentence was captured by both models, small character-level misclassifications remained in MOAT predictions, which could be easily corrected by a human reader or through LLM-based post-processing. However as expected by the accuracy results, SwinTransformer's output contains more errors, making the final output more difficult to read.
 
-Following this example, a comparative analysis across all architectures is provided, where for each architecture the best-performing model per key set are summarized in Table~\ref{tab:levenshtein_results}. Each model was assessed using the Levenshtein distance on raw predictions as well as on outputs refined with LLM-based correction (Gemini 2.5 Pro and GPT-OSS 120b). This design highlights both baseline reconstruction capability and the added benefit of contextual post-processing.
-
+Following this example, a comparative analysis across all architectures is provided, where for each architecture the best-performing model per key set is summarized in Table~\ref{tab:levenshtein_results}. Each Levenshtein distance value reported in the table represents the average over three separate runs, where in each run a different set of recordings from the test dataset was used for the sentences. This design ensures that the results capture variability across recordings and provide a more robust measure of reconstruction performance. Both raw predictions and outputs refined with LLM-based correction (Gemini 2.5 Pro and GPT-OSS 120b) are reported, highlighting baseline model capability as well as the benefit of contextual post-processing.
 
 \begin{table}[h!]
 \centering
 \caption{Levenshtein distance results for text reconstruction tasks.}
 \begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{l|c|c|c|c|c}
+\begin{tabular}{c|c|c|c|c|c}
 \hline
 \textbf{Model} & \textbf{Keys} & \textbf{Sentence}  &  \multicolumn{3}{c}{\textbf{Levenshtein Distance}} \\
 \cline{4-6}
@@ -1218,32 +1229,21 @@ From the results, can be seen that while not perfect in every case, the predicti
 \section{Real-World Simulation}
 
 
-This section presents the evaluation of model performance under more realistic conditions, using the fully customised dataset, described in Section \ref{customDataset}, which was created to imitate natural home background noises. Unlike the controlled experiments, these results reflect the challenges posed by environmental noise, varying recording distances, and device variability, providing a better estimate of practical applicability. Tables~\ref{tab:custom_alphanumeric} and \ref{tab:custom_all_keys} summarize the performance of models trained on the full dataset, including both clean and noisy subsets.
+This section presents the evaluation of model performance under more realistic conditions, using the fully customised dataset, described in Section \ref{customDataset}, which was created by the author of this thesis to imitate natural home background noises. Unlike the controlled experiments, these results reflect the challenges posed by environmental noise, varying recording distances, and device variability, providing a better estimate of practical applicability. Tables~\ref{tab:custom_alphanumeric} and \ref{tab:custom_all_keys} summarize the performance of models trained on the full dataset, including both clean and noisy subsets.
 
 
 \begin{table}[h!]
 \centering
-\caption{Performance of  models on the custom dataset with only alphanumeric keys.}
+\caption{Test performance of  models on the custom dataset with only alphanumeric keys.}
 \begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{l|c|c|c|ccccc}
+\begin{tabular}{c|c|c|c|ccccc}
 \hline
 \textbf{Model} & \textbf{Architecture} & \textbf{Window} & \textbf{Loss} & \multicolumn{5}{c}{\textbf{Accuracy [\%]}} \\
 \cline{5-9}
        &   \textbf{No.}  &   \textbf{Size}   &   & \textbf{All} & \textbf{Clean} & \textbf{Window} & \textbf{Dishwasher} & \textbf{Washing Machine}  \\
 \hline
-MOAT & 3 & - & 0.0062 & 81.09 & 95.0 & 69.16 & 82.41 & 78.70 \\
-CoAtNet & 4 & - & 0.0054 & 80.38 & 95.0 & 71.96 & 83.33 & 72.22 \\
-% MOAT & 3 & 16 & 0.0064 & 78.49 & 89.0 & 68.22 & 82.41 & 75.00 \\
-% coatnet & 3 & - & 0.0075 & 74.70 & 92.0 & 65.42 & 71.30 & 71.30 \\
-% MOAT & 2 & 16 & 0.0088 & 72.81 & 85.0 & 62.62 & 75.00 & 69.44 \\
-% coatnet & 2 & - & 0.0084 & 72.34 & 88.0 & 61.68 & 71.30 & 69.44 \\
-% coatnet & 1 & - & 0.0084 & 70.45 & 84.0 & 63.55 & 70.37 & 64.81 \\
-% MOAT & 4 & - & 0.0138 & 69.27 & 84.0 & 62.62 & 71.30 & 60.19 \\
-% MOAT & 4 & 16 & 0.0129 & 67.61 & 86.0 & 57.01 & 70.37 & 58.33 \\
-% MOAT & 2 & - & 0.0150 & 52.96 & 66.0 & 48.60 & 48.15 & 50.00 \\
-% MOAT & 4 & 8 & 0.0416 & 51.30 & 68.0 & 45.79 & 45.37 & 47.22 \\
-% MOAT & 1 & 8 & 0.0161 & 50.35 & 69.0 & 43.93 & 42.59 & 47.22 \\
-% MOAT & 1 & - & 0.0271 & 26.24 & 38.0 & 23.36 & 20.37 & 24.07 \\
+MOAT & 3 & - & 0.0062 & \textbf{81.09} & \textbf{95.0} & 69.16 & 82.41 & \textbf{78.70} \\
+CoAtNet & 4 & - & 0.0054 & 80.38 & \textbf{95.0} & \textbf{71.96} & \textbf{83.33} & 72.22 \\
 \hline
 \end{tabular}
 \end{adjustbox}
@@ -1253,7 +1253,7 @@ CoAtNet & 4 & - & 0.0054 & 80.38 & 95.0 & 71.96 & 83.33 & 72.22 \\
 
 \begin{table}[h!]
 \centering
-\caption{Performance of models on the custom dataset with all keys.}
+\caption{Test performance of models on the custom dataset with all keys.}
 \begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{l|c|c|c|ccccc}
 \hline
@@ -1261,19 +1261,8 @@ CoAtNet & 4 & - & 0.0054 & 80.38 & 95.0 & 71.96 & 83.33 & 72.22 \\
 \cline{5-9}
        &   \textbf{No.}  &   \textbf{Size}   &   & \textbf{All} & \textbf{Clean} & \textbf{Window} & \textbf{Dishwasher} & \textbf{Washing Machine}  \\
 \hline
-MOAT & 4 & 16 & 0.0058 & 85.68 & 95.86 & 76.47 & 87.77 & 83.60 \\
-% MOAT & 3 & - & 0.0061 & 85.40 & 95.86 & 78.07 & 87.23 & 81.48 \\
-% MOAT & 3 & 16 & 0.0062 & 85.27 & 94.67 & 75.40 & 88.30 & 83.60 \\
-CoAtNet & 4 & - & 0.0057 & 84.72 & 95.27 & 74.87 & 87.77 & 82.01 \\
-% coatnet & 3 & - & 0.0068 & 84.45 & 96.45 & 78.07 & 84.04 & 80.42 \\
-% MOAT & 4 & 8 & 0.0066 & 84.17 & 91.72 & 78.61 & 86.70 & 80.42 \\
-% MOAT & 4 & - & 0.0066 & 83.77 & 92.90 & 77.54 & 85.64 & 79.89 \\
-% MOAT & 2 & 16 & 0.0068 & 82.54 & 91.72 & 75.40 & 83.51 & 80.42 \\
-% MOAT & 1 & 8 & 0.0046 & 80.49 & 89.35 & 72.73 & 84.04 & 76.72 \\
-% coatnet & 1 & - & 0.0105 & 75.44 & 91.12 & 68.98 & 73.94 & 69.31 \\
-% coatnet & 2 & - & 0.0104 & 74.22 & 87.57 & 65.24 & 76.60 & 68.78 \\
-% MOAT & 2 & - & 0.0065 & 66.71 & 80.47 & 60.96 & 62.23 & 64.55 \\
-% MOAT & 1 & - & 0.0080 & 57.71 & 71.01 & 48.13 & 55.32 & 57.67 \\
+MOAT & 4 & 16 & 0.0058 & \textbf{85.68} & \textbf{95.86} & \textbf{76.47} & \textbf{87.77} & \textbf{83.60} \\
+CoAtNet & 4 & - & 0.0057 & 84.72 & \textbf{95.27} & 74.87 & \textbf{87.77} & 82.01 \\
 \hline
 \end{tabular}
 \end{adjustbox}
@@ -1281,7 +1270,7 @@ CoAtNet & 4 & - & 0.0057 & 84.72 & 95.27 & 74.87 & 87.77 & 82.01 \\
 \end{table}
 
 
-For clarity, only CoAtNet and MOAT are reported here, as Swin Transformer models showed insufficient performance in earlier experiments and were therefore excluded from extended training in this scenario. Furthermore, only the best-performing architecture from each model family is presented; comprehensive results for all configurations are provided in Appendix~\ref{appendix}. The tables indicate that predictive performance is consistently highest on the clean subset, suggesting that models learn these recordings more readily than noisy conditions, such as those with home appliances in the background. The most challenging patterns to learn appear to be those recorded with street noise.
+For clarity, only CoAtNet and MOAT are reported here, as Swin Transformer models showed insufficient performance in earlier experiments and were therefore excluded from extended training in this scenario. Furthermore, only the best-performing architecture from each model family is presented; comprehensive results for all configurations are provided in Appendix. The tables indicate that predictive performance is consistently highest on the clean subset, suggesting that models learn these recordings more readily than noisy conditions, such as those with home appliances in the background. The most challenging patterns to learn appear to be those recorded with street noise.
 
 A clear dependency on architecture size can also be observed: for both CoAtNet and MOAT, the largest architectures achieve the best overall accuracy across noisy and clean subsets, highlighting the benefit of increased model capacity when handling complex, heterogeneous acoustic environments.
 
@@ -1289,7 +1278,7 @@ A clear dependency on architecture size can also be observed: for both CoAtNet a
 \centering
 \caption{Best model's ability to transfer knowledge across different background noise recordings.}
 \begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{l|c|c|c|c|cc}
+\begin{tabular}{c|c|c|c|c|cc}
 \hline
 \textbf{Approach} & \textbf{Keys} & \textbf{Model} & \textbf{Architecture} & \textbf{Window} &  \multicolumn{2}{c}{\textbf{Accuracy [\%]}} \\
 \cline{6-7}
@@ -1319,9 +1308,6 @@ Table~\ref{tab:transfer_accuracy} presents the ability of the best models to tra
 In contrast, when models are trained on noisy recordings and evaluated on clean data, accuracy remains comparatively high, demonstrating that exposure to diverse acoustic conditions during training produces more robust representations, the drop in performance equals to about 10\%. These results indicate that models generalise better from noisy to clean conditions than vice versa, highlighting a strong asymmetry in knowledge transfer. Overall, training on heterogeneous and noisy data proves critical for achieving practical performance in realistic acoustic environments, particularly for larger and more complex architectures.
 
 
-Table~\ref{tab:topk_noisy_train} presents the top-k accuracies for models trained on noisy recordings and evaluated on both clean and noisy subsets. While the Top-1 accuracy on the clean dataset shows a noticeable drop compared to the noisy evaluation, the Top-k accuracies increase rapidly as \texttt{k} grows. This trend demonstrates that the correct key is frequently captured within the first few predictions, significantly reducing ambiguity and highlighting the potential of these models in practical reconstruction scenarios.
-
-
 
 \begin{table}[h!]
 \centering
@@ -1338,7 +1324,7 @@ Table~\ref{tab:topk_noisy_train} presents the top-k accuracies for models traine
 \multirow{2}{*}{Alphanumeric} & CoAtNet & 63.0 & 72.14 & 77.0 & 90.09 & 86.0 & 94.12 &  92.0 & 95.36 & 92.0 & 96.9 & 92.0 & 99.07\\
                               & MOAT & 58.0 & 71.83 & 70.0 & 85.76 & 80.0 & 90.4 &  85.0 & 93.19 & 85.0  & 95.67& 91.0 & 97.83\\
 \hline
-\multirow{2}{*}{All} & CoAtNet  & 71.01 & 78.72 & 86.98 & 89.18 & 91.72 & 92.2 & 94.67 & 93.09 & 94.67 & 95.04 & 96.45 & 96.99 \\
+\multirow{2}{*}{All} & CoAtNet  & \textbf71.01 & 78.72 & 86.98 & 89.18 & 91.72 & 92.2 & 94.67 & 93.09 & 94.67 & 95.04 & 96.45 & 96.99 \\
                     & MOAT    & 66.27 & 78.19 & 81.07 & 89.36 & 88.17 & 92.91 & 90.53 & 94.68 & 90.53 & 95.39 & 91.72 & 96.99 \\
 
 \hline
@@ -1347,58 +1333,74 @@ Table~\ref{tab:topk_noisy_train} presents the top-k accuracies for models traine
 \label{tab:topk_noisy_train}
 \end{table}
 
-As part of the task, the training history was also assessed. As shown in Figure \ref{fig:acc_noisy}, the models adapted quickly to the training data, whereas alignment with the validation subset increased more slowly but steadily over time.
 
 \begin{figure}[h!]
   \centering
   \begin{minipage}{0.49\linewidth}
       \centering
       \includegraphics[width=\linewidth]{img_results/acc_noisy_alphanum.png}
-      \subcaption{}
+      \subcaption{Alphanumeric keys}
   \end{minipage}
   \hfill
   \begin{minipage}{0.49\linewidth}
       \centering
       \includegraphics[width=\linewidth]{img_results/acc_noisy_all.png}
-      \subcaption{}
+      \subcaption{All keys}
   \end{minipage}
-  \caption{Training history of best CoAtNet architecture on: (a) alphanumeric keys, (b) all keys.}
+  \caption{Training history of best CoAtNet-4 architecture on different sets of keys with background noise.}
   \label{fig:acc_noisy}
 \end{figure}
 
+Table~\ref{tab:topk_noisy_train} presents the top-$k$ accuracies for models trained on noisy recordings and evaluated on both clean and noisy subsets. While the Top-1 accuracy on the clean dataset shows a noticeable drop compared to the noisy evaluation, the Top-$k$ accuracies increase rapidly as \texttt{k} grows. This trend demonstrates that the correct key is frequently captured within the first few predictions, significantly reducing ambiguity and highlighting the potential of these models in practical reconstruction scenarios.
 
-To further analyze classification performance and error patterns, confusion matrices (Figure \ref{fig:confusion_matrices_noisy}) were generated for the best-performing models on both key sets. For each dataset, separate matrices were produced for predictions on clean and noisy recordings.
+As part of the task, the training history was also assessed. As shown in Figure \ref{fig:acc_noisy}, the models adapted quickly to the training data, whereas alignment with the validation subset increased more slowly but steadily over time.
+
+
+To further analyze classification performance and error patterns, confusion matrices (Figure \ref{fig:confusion_matrices_noisy} and \ref{fig:confusion_matrices_noisy_mac}) were generated for the best-performing models on both key sets. For each dataset, separate matrices were produced for predictions on clean and noisy recordings.
+
+% \begin{figure}[h!]
+%   \centering
+%   % \begin{minipage}{0.49\linewidth}
+%   %     \centering
+%   %     \includegraphics[width=\linewidth]{img_results/cm_noisy_alphanum_noisy.png}
+%   %     \subcaption{}
+%   % \end{minipage}
+%   % \hfill
+%   % \begin{minipage}{0.49\linewidth}
+%   %     \centering
+%   %     \includegraphics[width=\linewidth]{img_results/cm_noisy_alphanum_mac.png}
+%   %     \subcaption{}
+%   % \end{minipage}
+
+%   \begin{minipage}{0.75\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_results/cm_noisy_all_noisy.png}
+%       \subcaption{Noisy recordings}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}{0.75\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_results/cm_noisy_all_mac.png}
+%       \subcaption{Clean recordings}
+%   \end{minipage}
+
+%   \caption{Confusion matrices of the best CoAtNet-4 model trained with all keys on noisy data and evaluated on different audio recordings.}
+%   \label{fig:confusion_matrices_noisy}
+% \end{figure}
 
 \begin{figure}[h!]
   \centering
-  \begin{minipage}{0.49\linewidth}
-      \centering
-      \includegraphics[width=\linewidth]{img_results/cm_noisy_alphanum_noisy.png}
-      \subcaption{}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.49\linewidth}
-      \centering
-      \includegraphics[width=\linewidth]{img_results/cm_noisy_alphanum_mac.png}
-      \subcaption{}
-  \end{minipage}
-
-  \vspace{1em}
-
-  \begin{minipage}{0.49\linewidth}
-      \centering
-      \includegraphics[width=\linewidth]{img_results/cm_noisy_all_noisy.png}
-      \subcaption{}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.49\linewidth}
-      \centering
-      \includegraphics[width=\linewidth]{img_results/cm_noisy_all_mac.png}
-      \subcaption{}
-  \end{minipage}
-
-  \caption{Confusion matrices of the best CoAtNet model trained on noisy data and evaluated on: (a) noisy alphanumeric keys, (b) clean alphanumeric keys, (c) noisy all keys, (d) clean all keys.}
+  \includegraphics[width=\linewidth]{img_results/cm_noisy_all_noisy.png}
+  % \subcaption{Noisy recordings}
+  \caption{Confusion matrices of the best CoAtNet-4 model trained with all keys on noisy data and evaluated on noisy recordings.}
   \label{fig:confusion_matrices_noisy}
+\end{figure}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{img_results/cm_noisy_all_mac.png}
+  % \subcaption{Noisy recordings}
+  \caption{Confusion matrices of the best CoAtNet-4 model trained with all keys on noisy data and evaluated on clean recordings.}
+  \label{fig:confusion_matrices_noisy_mac}
 \end{figure}
 
 From these matrices, the same pattern can be observed: while the majority of recordings are classified correctly, some misclassifications occur, particularly between keys located close to each other on the keyboard, such as 6 and 7, w and s, or k and j.
@@ -1410,58 +1412,541 @@ This study investigated the feasibility and limitations of acoustic side-channel
 
 In the controlled experiments on alphanumeric key presses, CoAtNet consistently achieved the highest accuracy, with medium- and large-scale variants achieving even 92.21\% overall accuracy. Notably, when evaluated on the dataset that is present in published works together with additional training data, CoAtNet achieved a state-of-the-art result of 95.23\% accuracy. MOAT demonstrated competitive results, often surpassing 88\% accuracy, with models using local attention slightly outperforming those with global attention. Swin Transformer, in contrast, lagged behind significantly, indicating limited suitability for this task under ideal conditions, proving strong effectiveness of convolutional layers. A clear correlation between model scale and performance was observed for CoAtNet, whereas MOAT’s performance was relatively insensitive to architectural size, and Swin Transformer exhibited weak performance regardless of configuration. Similar trends were observed in the scenario that included all keys from keyboard, although the increased number of classes and added complexity slightly reduced overall accuracy (by no more than 2\% with the best models). Top-$k$ accuracy analysis showed that even when the first prediction was incorrect, the correct key often appeared within the top few predictions, demonstrating that practical keystroke reconstruction remains feasible, particularly when combined with post-processing using large language models such as Gemini and GPT-OSS.
 
-The real-world simulation highlighted the influence of noise and environmental variability on model performance. When trained on the full custom dataset, including both clean and noisy recordings, larger architectures consistently outperformed smaller ones, with clean recordings remaining substantially easier to predict than noisy subsets. Knowledge transfer experiments revealed a strong asymmetry, models trained exclusively on clean recordings failed to generalize to noisy conditions, whereas models trained on noisy data generalized well to clean recordings with only modest performance drops. Furthermore, models trained on the full key set generally achieved higher accuracy than those trained on only alphanumeric keys, underscoring the benefits of exposing networks to more diverse datasets.
+The real-world simulation highlighted the influence of noise and environmental variability on model performance. When trained on the full custom dataset, including both clean and noisy recordings, larger architectures consistently outperformed smaller ones, with clean recordings remaining substantially easier to predict than noisy subsets. Knowledge transfer experiments revealed a strong asymmetry: models trained exclusively on clean recordings failed to generalize to noisy conditions, whereas models trained on noisy data generalized well to clean recordings with only modest performance drops. Furthermore, models trained on the full key set generally achieved higher accuracy than those trained on only alphanumeric keys, underscoring the benefits of exposing networks to more diverse datasets.
 
-In summary, the results demonstrate that acoustic side-channel attacks can be highly effective under ideal conditions, but their performance in realistic, noisy environments depends strongly on the diversity and quality of the training data. Perfectly clean conditions are rare in everyday situations, which considerably reduces the practical risk of such attacks. The study highlights the importance of model architecture and scale: larger and well-regularized models consistently achieve the best predictive performance, yet their effectiveness is tied to the specificity of the training setup. Exposure to heterogeneous and noisy recordings improves generalization, allowing models to maintain reasonable accuracy even when faced with acoustic disturbances.Post-processing with large language models further enhances reconstruction by leveraging semantic context, but this improvement primarily reflects general language patterns rather than sensitive, case-specific information, which remains more difficult to predict. Despite these advances, certain keys are inherently more prone to misclassification due to acoustic similarity or physical proximity on the keyboard, underscoring intrinsic limitations of audio-based keystroke recognition. Overall, these findings provide a comprehensive view of the potential and constraints of neural-network-based acoustic attacks, while also informing practical defenses, such as noise injection, hardware modifications, or keyboard layout adjustments, to mitigate risk in realistic scenarios.
+In summary, the results demonstrate that acoustic side-channel attacks can be highly effective under ideal conditions, but their performance in realistic, noisy environments depends strongly on the diversity and quality of the training data. Perfectly clean conditions are rare in everyday situations, which considerably reduces the practical risk of such attacks. The study highlights the importance of model architecture and scale: larger and well-regularized models consistently achieve the best predictive performance, yet their effectiveness is tied to the specificity of the training setup. Exposure to heterogeneous and noisy recordings improves generalization, allowing models to maintain reasonable accuracy even when faced with acoustic disturbances. Post-processing with large language models further enhances reconstruction by leveraging semantic context, but this improvement primarily reflects general language patterns rather than sensitive, case-specific information, such as passwords, which remain more difficult to predict. Despite these advances, certain keys are inherently more prone to misclassification due to acoustic similarity or physical proximity on the keyboard, underscoring intrinsic limitations of audio-based keystroke recognition. Overall, these findings provide a comprehensive view of the potential and constraints of neural-network-based acoustic attacks, while also informing practical defenses, such as noise injection, hardware modifications, or keyboard layout adjustments, to mitigate risk in realistic scenarios.
+
+\chapter{Future Work}
 
 \printbibliography
 
+\section*{Acknowledgments}
 
+This research was carried out with the support of the High Performance Computing Center at Faculty of Mathematics and Information Science Warsaw University of Technology.
 
 \newpage
 
-\section*{Appendix}
+\chapter*{Appendix}
 
+\section*{Controlled Setting}
 
-\begin{table}[h!]
+\begin{table}[ht]
 \centering
-\caption{Performance of  models on the \textbf{alphanumeric} ... dataset.}
+\caption{Top-$k$ accuracies of models on the publicly available datasets with alphanumeric keys.}
 \begin{adjustbox}{max width=\textwidth}
-\begin{tabular}{l|c|c|c|c|cc}
+\begin{tabular}{c|c|c|cccccc}
 \hline
-\textbf{Approach} & \textbf{Model} & \textbf{Architecture} & \textbf{Window} & \multicolumn{2}{c}{\textbf{Accuracy [\%]}} \\
-\cline{5-6}
-       & &   \textbf{No.}  &   \textbf{Size}   &  \textbf{Clean} & \textbf{Noisy}  \\
+\textbf{Model} & \textbf{Architecture} & \textbf{Window} & \multicolumn{6}{c}{\textbf{Accuracy (\%)}} \\
+\cline{4-9}
+ & \textbf{No.} & \textbf{Size} & \textbf{Top-1} & \textbf{Top-2} & \textbf{Top-3} & \textbf{Top-4} & \textbf{Top-5} & \textbf{Top-10} \\
 \hline
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-Clean $\rightarrow$ Noisy & &  &  &  &  \\
-
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
-% Noisy $\rightarrow$ Clean & &  &  &  &  \\
+CoAtNet & 3 & - & \textbf{92.21} & 96.57 & 97.82 & 98.29 & 98.75 & 99.53 \\
+CoAtNet & 4 & - & 90.65 & \textbf{97.20} & \textbf{98.13} & \textbf{98.75} & \textbf{98.91} & 99.38 \\
+MOAT & 2 & 16 & 88.16 & 95.48 & 97.04 & 97.66 & 98.75 & \textbf{99.69} \\
+MOAT & 4 & 8 & 86.60 & 94.70 & 97.20 & 97.98 & 98.29 & 99.38 \\
+MOAT & 1 & 8 & 86.29 & 93.93 & 97.04 & 97.66 & 98.29 & 99.07 \\
+MOAT & 3 & - & 85.98 & 94.39 & 96.42 & 98.13 & 98.91 & 99.22 \\
+MOAT & 4 & 16 & 85.67 & 94.86 & 96.73 & 97.51 & 98.13 & 99.53 \\
+CoAtNet & 1 & - & 84.27 & 92.37 & 95.48 & 97.04 & 98.44 & 99.07 \\
+CoAtNet & 2 & - & 83.64 & 92.52 & 94.70 & 96.73 & 97.82 & 99.53 \\
+MOAT & 2 & - & 83.33 & 92.83 & 96.11 & 97.51 & 98.60 & 99.38 \\
+MOAT & 4 & - & 82.71 & 93.77 & 96.88 & 98.44 & 98.60 & 99.53 \\
+MOAT & 3 & 16 & 82.09 & 92.06 & 95.48 & 96.88 & 97.98 & 99.53 \\
+MOAT & 1 & - & 80.06 & 91.28 & 95.48 & 96.57 & 97.66 & 98.91 \\
+SwinTransformer & 3 & 8 & 55.30 & 71.81 & 78.50 & 84.27 & 88.47 & 95.02 \\
+SwinTransformer & 2 & 4 & 53.89 & 70.25 & 77.26 & 83.64 & 87.38 & 93.93 \\
+SwinTransformer & 4 & 16 & 23.99 & 36.60 & 44.55 & 50.62 & 57.48 & 75.39 \\
+SwinTransformer & 1 & 4 & 38.47 & 52.96 & 64.49 & 70.09 & 76.79 & 90.34 \\
 \hline
 \end{tabular}
 \end{adjustbox}
 \end{table}
+\begin{table}[h!]
+\centering
+\caption{Top-$k$ accuracies of models on the publicly available datasets with all keys.}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{c|c|c|cccccc}
+\hline
+\textbf{Model} & \textbf{Architecture} & \textbf{Window} & \multicolumn{6}{c}{\textbf{Accuracy (\%)}} \\
+\cline{4-9}
+ & \textbf{No.} & \textbf{Size} & \textbf{Top-1} & \textbf{Top-2} & \textbf{Top-3} & \textbf{Top-4} & \textbf{Top-5} & \textbf{Top-10} \\
+\hline
+CoAtNet & 3 & - & \textbf{90.94} & \textbf{97.02} & \textbf{98.19} & 98.58 & 98.84 & 99.48 \\
+CoAtNet & 4 & - & 90.82 & 96.64 & 97.80 & \textbf{98.58} & \textbf{98.97} & 99.35 \\
+MOAT & 3 & - & 89.65 & 96.38 & 98.06 & 98.45 & \textbf{98.58} & \textbf{99.61} \\
+MOAT & 1 & - & 87.71 & 94.70 & 97.41 & 98.32 & 98.84 & 99.35 \\
+MOAT & 3 & 8 & 86.03 & 94.44 & 96.64 & 97.67 & 98.06 & 98.84 \\
+MOAT & 1 & 8 & 85.77 & 93.79 & 96.38 & 97.67 & 98.19 & 99.09 \\
+MOAT & 2 & 16 & 84.48 & 93.92 & 95.73 & 96.90 & 98.06 & 99.09 \\
+CoAtNet & 1 & - & 83.31 & 92.76 & 95.86 & 97.41 & 98.19 & 99.35 \\
+CoAtNet & 2 & - & 78.78 & 91.33 & 93.66 & 95.73 & 97.28 & 98.84 \\
+SwinTransformer & 3 & 8 & 58.47 & 74.26 & 80.47 & 84.48 & 87.32 & 93.79 \\
+SwinTransformer & 2 & 4 & 54.59 & 67.92 & 74.77 & 80.34 & 83.70 & 93.40 \\
+SwinTransformer & 4 & 16 & 49.29 & 64.81 & 74.77 & 79.30 & 81.63 & 90.82 \\
+SwinTransformer & 1 & 4 & 39.07 & 55.63 & 65.07 & 71.93 & 76.84 & 87.45 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{\linewidth}
+    \centering
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/loss_all_moat_alphanum.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/acc_all_moat_alphanum.png}
+    \end{minipage}
+    \caption{Alphanumeric keys}
+\end{subfigure}
+\vspace{0.5em}
+\begin{subfigure}{\linewidth}
+    \centering
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/loss_all_moat_all.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/acc_all_moat_all.png}
+    \end{minipage}
+    \caption{All keys}
+\end{subfigure}
+
+\caption{Training histories of the best MOAT architectures on different sets of keys.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+
+\begin{subfigure}{\linewidth}
+    \centering
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/loss_all_swin_alphanum.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/acc_all_swin_alphanum.png}
+    \end{minipage}
+    \caption{Alphanumeric keys}
+\end{subfigure}
+\vspace{0.5em}
+\begin{subfigure}{\linewidth}
+    \centering
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/loss_all_swin_all.png}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{img_appendix/acc_all_swin_all.png}
+    \end{minipage}
+    \caption{All keys}
+\end{subfigure}
+
+\caption{Training histories of the best Swin Transformer architectures on different sets of keys.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \begin{minipage}{0.49\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{img_appendix/cm_all_alphanum_mka.png}
+      \subcaption{MKA dataset}
+  \end{minipage}
+  \begin{minipage}{0.49\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{img_appendix/cm_all_alphanum_n.png}
+      \subcaption{Noiseless dataset}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.49\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{img_appendix/cm_all_alphanum_p.png}
+      \subcaption{Practical dataset}
+  \end{minipage}
+  \caption{Confusion matrices of the best CoAtNet model using alphanumeric keys evaluated on different datasets.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \begin{minipage}{0.49\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{img_appendix/cm_all_all_mka.png}
+      \subcaption{MKA dataset}
+  \end{minipage}
+  \begin{minipage}{0.49\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{img_appendix/cm_all_all_n.png}
+      \subcaption{Noiseless dataset}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.49\linewidth}
+      \centering
+      \includegraphics[width=\linewidth]{img_appendix/cm_all_all_p.png}
+      \subcaption{Practical dataset}
+  \end{minipage}
+  \caption{Confusion matrices of the best CoAtNet model using all keys evaluated on few datasets.}
+\end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%     \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_alphanum_all.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_alphanum_mka.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_alphanum_n.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_alphanum_p.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \caption{Confusion matrices of the best MOAT model using alphanumeric keys evaluated on: (a) Combined all recordings (b) MKA dataset, (c) Noiseless dataset, (d) Practical dataset.}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%     \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_all_all.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_all_mka.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_all_n.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_moat_all_p.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \caption{Confusion matrices of the best MOAT model using all keys evaluated on: (a) Combined all recordings (b) MKA dataset, (c) Noiseless dataset, (d) Practical dataset.}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%     \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_alphanum_all.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_alphanum_mka.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_alphanum_n.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_alphanum_p.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \caption{Confusion matrices of the best Swin Transformer model using alphanumeric keys evaluated on: (a)Combined all recordings (b) MKA dataset, (c) Noiseless dataset, (d) Practical dataset.}
+% \end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%     \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_all_all.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_all_mka.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_all_n.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \begin{minipage}{0.49\linewidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{img_appendix/cm_all_swin_all_p.png}
+%       \subcaption{}
+%   \end{minipage}
+%   \caption{Confusion matrices of the best Swin Transformer model using all keys evaluated on: (a)Combined all recordings (b) MKA dataset, (c) Noiseless dataset, (d) Practical dataset.}
+% \end{figure}
+
+
+\begin{tcolorbox}[colback=white!5,colframe=gray!20,title=Prompt to reconstruct the words using alphanumeric keys,coltitle=black]
+You are given a list of keypresses predicted by a model that represent some meaningful words.
+Each keypress corresponds to one element in the input array. The list can contain alphanumeric characters.
+
+Although the model predicts most keypresses correctly, there may be occasional errors (wrong letters or numbers).
+Your task is to reconstruct the original words, based on the given predictions.
+
+\textbf{Important requirements:}
+\begin{itemize}
+  \item Fix obvious typing mistakes so the output is a coherent, grammatically correct English text, but without changing the order of the characters.
+  \item The total number of input keypresses must exactly match the total number of keypresses required to produce the fixed output.
+  \item If you think a key is mistyped, you may replace it in place with the correct one. However, you cannot delete it or add new ones.
+\end{itemize}
+
+\textbf{Example:} \\
+Input: [ ['h', 'a', 'l', 'k', 'o'], ['w', 'o', 'r', 'l', 'e'] ] \\
+Expected output: [ ['h', 'e', 'l', 'l', 'o' ], ['w', 'o', 'r', 'l', 'd'] ] \\
+Explanation: 'a' was mismatched with 'e', 'k' was mistaken with 'l' and 'e' was misclassified with 'd'
+
+Process following list of predictions: \{input\_data\}
+
+Return a list of key lists that are most probable, without any extra explanations, code, additional styling, or comments. You MUST NOT include any comments.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=white!5,colframe=gray!20,title=Prompt to reconstruct the senteces using all keys,coltitle=black]
+You are given a list of keypresses predicted by a model that represent a sentence.
+Each keypress corresponds to one element in the input array. The list can contain alphanumeric characters and special keys (such as shifts, cmds, alts etc).
+
+Although the model predicts most keypresses correctly, there may be occasional errors (wrong letters, numbers, or special keys).
+Your task is to reconstruct the original sentence, based on the given predictions.
+
+\textbf{Important requirements:}
+\begin{itemize}
+  \item Fix obvious typing mistakes so the output is a coherent, grammatically correct English sentence, but without changing the order of the characters.
+  \item The total number of input keypresses must exactly match the total number of keypresses required to produce the fixed output.
+  \item If you think a key is mistyped, you may replace it in place with the correct one. However, you cannot delete it or add new ones.
+\end{itemize}
+
+\textbf{Example:} \\
+Input: ['caps', 'h', 'caps', 'a', 'l', 'l', 'o', 'space', 'b', 'e', 'u', 't', 'k', 'f', 'u', 'l', 'space', 'shift', 'w', 'o', 'r', 'l', 'e', 'shift', '1']\\
+Expected output: ['caps', 'h', 'caps', 'e', 'l', 'l', 'o', 'space', 'b', 'e', 'a', 'u', 't', 'i', 'f', 'u', 'l', 'space', 'shift', 'w', 'o', 'r', 'l', 'e', 'shift', '1']\\
+Explanation: 'k' was mismatched with 'i' and 'e' was misclassified with 'd', two 'caps' keys make sense as they result in capitalized 'h' and the last keys create '!'
+
+Process the following list of predictions: \{input\_data\}
+
+Return a list of keypresses that are most probable and create a meaningful sentence, provide it without any extra explanations, code, additional styling, or comments.
+\end{tcolorbox}
+
+
+\newpage
+\section*{Real-World Simulation}
+\label{appendix_real_world}
+
+
+
+\begin{table}[h!]
+\centering
+\caption{Performance of  models on the custom dataset with only alphanumeric keys.}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l|c|c|c|ccccc}
+\hline
+\textbf{Model} & \textbf{Architecture} & \textbf{Window} & \textbf{Loss} & \multicolumn{5}{c}{\textbf{Accuracy [\%]}} \\
+\cline{5-9}
+       &   \textbf{No.}  &   \textbf{Size}   &   & \textbf{All} & \textbf{Clean} & \textbf{Window} & \textbf{Dishwasher} & \textbf{Washing Machine}  \\
+\hline
+MOAT & 3 & - & 0.0062 & \textbf{81.09} & \textbf{95.0} & 69.16 & 82.41 & \textbf{78.70} \\
+CoAtNet & 4 & - & 0.0054 & 80.38 & \textbf{95.0} & \textbf{71.96} & \textbf{83.33} & 72.22 \\
+MOAT & 3 & 16 & 0.0064 & 78.49 & 89.0 & 68.22 & 82.41 & 75.00 \\
+CoAtNet & 3 & - & 0.0075 & 74.70 & 92.0 & 65.42 & 71.30 & 71.30 \\
+MOAT & 2 & 16 & 0.0088 & 72.81 & 85.0 & 62.62 & 75.00 & 69.44 \\
+CoAtNet & 2 & - & 0.0084 & 72.34 & 88.0 & 61.68 & 71.30 & 69.44 \\
+CoAtNet & 1 & - & 0.0084 & 70.45 & 84.0 & 63.55 & 70.37 & 64.81 \\
+MOAT & 4 & - & 0.0138 & 69.27 & 84.0 & 62.62 & 71.30 & 60.19 \\
+MOAT & 4 & 16 & 0.0129 & 67.61 & 86.0 & 57.01 & 70.37 & 58.33 \\
+MOAT & 2 & - & 0.0150 & 52.96 & 66.0 & 48.60 & 48.15 & 50.00 \\
+MOAT & 4 & 8 & 0.0416 & 51.30 & 68.0 & 45.79 & 45.37 & 47.22 \\
+MOAT & 1 & 8 & 0.0161 & 50.35 & 69.0 & 43.93 & 42.59 & 47.22 \\
+MOAT & 1 & - & 0.0271 & 26.24 & 38.0 & 23.36 & 20.37 & 24.07 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\caption{Performance of models on the custom dataset with all keys.}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l|c|c|c|ccccc}
+\hline
+\textbf{Model} & \textbf{Architecture} & \textbf{Window} & \textbf{Loss} & \multicolumn{5}{c}{\textbf{Accuracy [\%]}} \\
+\cline{5-9}
+       &   \textbf{No.}  &   \textbf{Size}   &   & \textbf{All} & \textbf{Clean} & \textbf{Window} & \textbf{Dishwasher} & \textbf{Washing Machine}  \\
+\hline
+MOAT & 4 & 16 & 0.0058 & \textbf{85.68} & 95.86 & 76.47 & 87.77 & \textbf{83.60} \\
+MOAT & 3 & - & 0.0061 & 85.40 & 95.86 & 78.07 & 87.23 & 81.48 \\
+MOAT & 3 & 16 & 0.0062 & 85.27 & 94.67 & 75.40 & \textbf{88.30} & \textbf{83.60} \\
+CoAtNet & 4 & - & 0.0057 & 84.72 & 95.27 & 74.87 & 87.77 & 82.01 \\
+CoAtNet & 3 & - & 0.0068 & 84.45 & \textbf{96.45} & 78.07 & 84.04 & 80.42 \\
+MOAT & 4 & 8 & 0.0066 & 84.17 & 91.72 & \textbf{78.61} & 86.70 & 80.42 \\
+MOAT & 4 & - & 0.0066 & 83.77 & 92.90 & 77.54 & 85.64 & 79.89 \\
+MOAT & 2 & 16 & 0.0068 & 82.54 & 91.72 & 75.40 & 83.51 & 80.42 \\
+MOAT & 1 & 8 & 0.0046 & 80.49 & 89.35 & 72.73 & 84.04 & 76.72 \\
+CoAtNet & 1 & - & 0.0105 & 75.44 & 91.12 & 68.98 & 73.94 & 69.31 \\
+CoAtNet & 2 & - & 0.0104 & 74.22 & 87.57 & 65.24 & 76.60 & 68.78 \\
+MOAT & 2 & - & 0.0065 & 66.71 & 80.47 & 60.96 & 62.23 & 64.55 \\
+MOAT & 1 & - & 0.0080 & 57.71 & 71.01 & 48.13 & 55.32 & 57.67 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Model's ability to transfer knowledge across different background noise recordings when trained on clean dataset.}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{c|c|c|c|cc}
+\hline
+\textbf{Keys} & \textbf{Model} & \textbf{Architecture} & \textbf{Window} &  \multicolumn{2}{c}{\textbf{Accuracy [\%]}} \\
+\cline{5-6}
+       & & \textbf{No.}  &   \textbf{Size}   &  \textbf{Clean} & \textbf{Noisy}  \\
+\hline
+\multirow{8}{*}{Alphanumeric}
+  & MOAT    & 3 & -         & 70.00 & 8.36 \\
+  % & MOAT    & 3 & 8         & 65.00 & 8.98 \\
+  & MOAT    & 4 & -         & 61.00 & 7.74 \\
+  % & MOAT    & 4 & 8         & 58.00 & 6.19 \\
+  & MOAT    & 2 & -         & 55.00 & 5.88 \\
+  % & MOAT    & 4 & 16        & 52.00 & 6.19 \\
+  % & MOAT    & 2 & 16        & 51.85 & 5.88 \\
+  & CoAtNet & 4 & -         & 50.00 & 4.33 \\
+  & CoAtNet & 2 & -         & 48.15 & 4.33 \\
+  & CoAtNet & 3 & -         & 47.00 & 4.95 \\
+  & MOAT    & 1 & 8         & 45.00 & 5.88 \\
+  & CoAtNet & 1 & -         & 43.00 & 6.50 \\
+  % & MOAT    & 1 & -         & 38.00 & 6.81 \\
+\hline
+\multirow{8}{*}{All}
+  & MOAT    & 3 & 8         & 87.57 & 13.48 \\
+  & CoAtNet & 4 & -         & 86.39 & 12.41 \\
+  % & MOAT    & 3 & -         & 86.39 & 10.82 \\
+  & CoAtNet & 1 & -         & 81.66 & 9.04 \\
+  & CoAtNet & 3 & -         & 77.51 & 11.17 \\
+  & MOAT    & 4 & -         & 73.37 & 7.98 \\
+  & CoAtNet & 2 & -         & 69.23 & 4.61 \\
+  & MOAT    & 2 & 16        & 65.09 & 7.27 \\
+  % & MOAT    & 4 & 8         & 63.91 & 6.74 \\
+  % & MOAT    & 4 & 16        & 59.17 & 6.38 \\
+  % & MOAT    & 2 & -         & 55.62 & 5.32 \\
+  & MOAT    & 1 & -         & 54.44 & 4.96 \\
+  % & MOAT    & 1 & 8         & 53.85 & 4.79 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\caption{Model's ability to transfer knowledge across different background noise recordings when trained on noisy part of custom data.}
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{c|c|c|c|cc}
+\hline
+\textbf{Keys} & \textbf{Model} & \textbf{Architecture} & \textbf{Window} &  \multicolumn{2}{c}{\textbf{Accuracy [\%]}} \\
+\cline{5-6}
+       & & \textbf{No.}  &   \textbf{Size}   &  \textbf{Clean} & \textbf{Noisy}  \\
+\hline
+\multirow{8}{*}{Alphanumeric}
+& CoAtNet & 4 & - & 63.0 & 72.14 \\
+& MOAT & 3 & 16 & 58.0 & 71.83 \\
+& MOAT & 2 & 16 & 63.0 & 70.28 \\
+& CoAtNet & 1 & - & 39.0 & 65.63 \\
+& CoAtNet & 2 & - & 41.0 & 62.85 \\
+% & MOAT & 3 & - & 23.0 & 56.97 \\
+& MOAT & 4 & 16 & 24.0 & 45.2 \\
+% & MOAT & 2 & - & 23.0 & 39.63 \\
+& MOAT & 1 & 8 & 20.0 & 36.84 \\
+% & MOAT & 4 & 8 & 23.0 & 35.91 \\
+% & MOAT & 4 & - & 12.0 & 33.44 \\
+& CoAtNet & 3 & - & 18.0 & 27.86 \\
+% & MOAT & 1 & - & 13.0 & 25.39 \\
+\hline
+\multirow{8}{*}{All}
+& CoAtNet & 4 & - & 71.01 & 78.72 \\
+& MOAT & 4 & 16 & 66.27 & 78.19 \\
+& MOAT & 3 & - & 67.46 & 78.01 \\
+& CoAtNet & 3 & - & 72.78 & 77.30 \\
+% & MOAT & 4 & 8 & 65.68 & 76.60 \\
+% & MOAT & 3 & 16 & 57.99 & 75.35 \\
+& MOAT & 2 & 16 & 57.40 & 75.18 \\
+& CoAtNet & 2 & - & 45.56 & 67.91 \\
+& CoAtNet & 1 & - & 38.46 & 64.36 \\
+% & MOAT & 2 & - & 36.69 & 57.98 \\
+& MOAT & 1 & 8 & 23.08 & 50.89 \\
+% & MOAT & 1 & - & 27.22 & 44.33 \\
+% & MOAT & 4 & - & 20.71 & 37.94 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+
+% \begin{table}[h!]
+% \centering
+% \caption{Performance of  models on the \textbf{alphanumeric} ... dataset.}
+% \begin{adjustbox}{max width=\textwidth}
+% \begin{tabular}{l|c|c|c|c|cc}
+% \hline
+% \textbf{Approach} & \textbf{Model} & \textbf{Architecture} & \textbf{Window} & \multicolumn{2}{c}{\textbf{Accuracy [\%]}} \\
+% \cline{5-6}
+%        & &   \textbf{No.}  &   \textbf{Size}   &  \textbf{Clean} & \textbf{Noisy}  \\
+% \hline
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+% Clean $\rightarrow$ Noisy & &  &  &  &  \\
+
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% % Noisy $\rightarrow$ Clean & &  &  &  &  \\
+% \hline
+% \end{tabular}
+% \end{adjustbox}
+% \end{table}
 
 
 \end{document}
