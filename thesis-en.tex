@@ -239,7 +239,8 @@ W d\k{a}\.zeniu do wzmocnienia bezpiecze\'nstwa cyfrowego badania koncentruj\k{a
 
 Niniejsza praca analizuje r\'o\.zne architektury sieci neuronowych do rozpoznawania naci\'sni\k{e}\' c klawiszy na podstawie sygna\l{}\'ow akustycznych, w zr\'o\.znicowanych \'srodowiskach, warunkach t\l{}a oraz zestawach klawiszy. Opracowane modele osi\k{a}gn\k{e}\l{}y dok\l{}adno\'s\'c na poziomie 92\% w przypadku og\'olnodost\k{e}pnych nagra\'n i ustanowi\l{}y najwy{\. z}szy wynik (state-of-the-art) na istniej\k{a}cym benchmarku.
 
-Poza sam\k{a} dok\l{}adno\'sci\k{a}, badania koncentruj\k{a} si\k{e} na wp\l{}ywie danych treningowych, skali modeli i ekspozycji na szumy na zdolno\'s\'c uog\'olniania, a tak\.ze sprawdzaj\k{a}, czy du\.ze modele j\k{e}zykowe mog\k{a} wykorzystywa\'c kontekst semantyczny do naprawiania b\l{\k e}d\'ow w surowych predykcjach. Praca wskazuje zar\'owno na mo\.zliwo\'sci, jak i ograniczenia akustycznych atak\'ow bocznokana\l{}owych, a tak\.ze sugeruje skuteczne strategie obrony, takie jak unikanie przebywania w ciszy, modyfikacje sprz\k{e}towe czy zmiany w konstrukcji klawiatur.
+Poza sam\k{a} dok\l{}adno\'sci\k{a}, badania koncentruj\k{a} si\k{e} na wp\l{}ywie danych treningowych, skali modeli i ekspozycji na szumy na zdolno\'s\'c uog\'olniania, a tak\.ze sprawdzaj\k{a}, czy du\.ze modele j\k{e}zykowe mog\k{a} s\l{}u\. zy\'c do naprawiania b\l{\k e}d\'ow  wykorzystuj\k{a}c kontekst semantyczny w surowych predykcjach. Praca wskazuje zar\'owno na mo\.zliwo\'sci, jak i ograniczenia akustycznych atak\'ow bocznokana\l{}owych, a tak\.ze sugeruje skuteczne strategie obrony, takie jak unikanie przebywania w ciszy, modyfikacje sprz\k{e}towe czy zmiany w konstrukcji klawiatur.
+
 
 \end{abstract}
 }
@@ -702,10 +703,6 @@ By comparing performance across these two settings, the study analyses the asymm
 
 The results aim to provide a comprehensive understanding of the capabilities and limitations of acoustic side-channel attacks in both ideal and realistic scenarios. They will also be combined with postprocessing performed using Large Language Models (LLMs), offering a hybrid perspective. Even when the raw acoustic model fails to produce perfect predictions, the contextual and syntactic knowledge of language models can be leveraged to correct plausible errors, simulating how an attacker might augment model output with semantic reasoning.
 
-% \vspace{0.5cm}
-
-% Together, these two axes of variation—data scope and environmental condition—allow for a comprehensive analysis of acoustic side-channel vulnerability. They help differentiate between semantic recovery scenarios and exact transcription requirements, and between theoretical feasibility and practical risk.
-
 \section{Data Preparation}
 
 Accurate segmentation and preprocessing of audio signals are key steps in creating reliable classification models. This section describes in detail the process of isolating individual keystroke events from continuous recordings, preparing them for input into machine learning architectures, and ensuring consistency across different datasets.
@@ -745,29 +742,6 @@ Potential key presses are identified as peaks exceeding a dynamic threshold, wit
 \RETURN $\mathcal{S}$
 \end{algorithmic}
 \end{algorithm}
-
-
-% The raw recordings contain sequences of a specific number of consecutive keystrokes in each file. To extract individual keystrokes, an energy-based segmentation algorithm was used. First, the signal is transformed using a short-time Fourier transform (STFT), then he energy of each time frame is calculated as the sum of the magnitudes in all frequency intervals, resulting in a one-dimensional energy profile of the signal. This profile is then normalised in the min-max range to the range [0, 1] for each recording separately.
-
-% A dynamic threshold mechanism is used to detect potential key presses. Peaks in the normalised energy profile that exceed the initial threshold are selected. These peaks are grouped into clusters if they are within a small time window to eliminate multiple detections of the same key press caused by reverberation or overlapping energy spikes.
-% Since recordings are known to contain a fixed number of key presses, an adaptive threshold tuning strategy is used. If too few peaks are detected, the threshold is iteratively lowered; if too many peaks are detected, it is raised. This loop continues until the desired number of events is found or the maximum number of retries is reached. For each final timestamp, a fixed-size audio window is extracted, typically covering a short segment before and after the detected key press to ensure full coverage of the audio event. Overlapping segments are filtered based on a configurable overlap factor to avoid duplicates. After that the segments are trimmed from silence using a heuristic approach based on thresholded amplitude detection, ensuring that only the relevant parts of the keystroke sound are retained. Finally, short audio files are randomly grouped into a train, validation and test set, with a 70/15/15 distribution.
-
-% \begin{figure}[h!]
-%   \centering
-%   \begin{subfigure}[b]{0.49\textwidth}
-%     \centering
-%     \includegraphics[width=\textwidth]{img_methodology/segmentation_1.png}
-%     \label{fig:segmentation_example}
-%   \end{subfigure}
-%   \hfill
-%   \begin{subfigure}[b]{0.49\textwidth}
-%     \centering
-%     \includegraphics[width=\textwidth]{img_methodology/segmentation_2.png}
-%     \label{fig:segmentation_example2}
-%   \end{subfigure}
-%   \caption{Energy-based segmentation of 'w' and 's' keystroke recordings.}
-%   \label{fig:energy_segmentation}
-% \end{figure}
 
 
 \begin{figure}[h!]
@@ -1032,6 +1006,7 @@ When comparing architectures within each model family, clear patterns emerge. In
 CoAtNet & 3 & - & 0.0024 & \textbf{90.94} & \textbf{93.33} & 85.08 & \textbf{98.31}  \\
 CoAtNet & 4 & - & 0.0020 & 90.82 & 93.06 & \textbf{87.12} & 93.22  \\
 MOAT & 3 & - & 0.0034 & 89.65 & 92.22 & 84.07 & 95.76  \\
+MOAT & 4 & 16 & 0.0035 & 89.65 & 91.67 & 85.42 &	94.07 \\
 MOAT & 1 & - & 0.0037 & 87.71 & 89.44 & 85.42 & 88.14  \\
 MOAT & 3 & 16 & 0.0078 & 86.03 & 88.89 & 79.66 & 93.22  \\
 MOAT & 1 & 8 & 0.0043 & 85.77 & 86.94 & 83.73 & 87.29  \\
@@ -1165,8 +1140,7 @@ The characters required to form each sentence were randomly sampled from the tes
 
 When models trained with full set of keys were assessed, the full set of characters required to recreate each sentence was included, preserving case sensitivity. The only simplification applied was that modifier keys (e.g., Shift) were assumed to affect only the immediately following character, since detecting exact release times is difficult in practice. In contrast, evaluation on the alphanumeric-only dataset simplified the problem: sentences were transformed into lists of lowercase words without punctuation, reflecting the reduced output space of these models.
 
-The LLM prompts used for correction were tailored to the two prediction scenarios. For alphanumeric-only outputs, the LLM received a list of lowercase keypresses grouped into words, with instructions to correct obvious substitutions while preserving both order and length of the sequence. For all-key outputs, the input included alphanumeric and special keys (e.g., \texttt{Shift}, \texttt{Caps}, \texttt{Ctrl}), and the LLM was guided to reconstruct coherent sentences while respecting key semantics. Crucially, the prompts framed the inputs explicitly as predicted keypresses, not free text, and instructed the LLM to treat them as noisy model outputs to be repaired. This context ensured that the LLM corrected systematic misclassifications in a way consistent with keystroke-level predictions, rather than performing generic spell-checking.
-
+The LLM prompts used for correction were tailored to the two prediction scenarios. For alphanumeric-only outputs, the LLM received a list of lowercase keypresses grouped into words, with instructions to correct obvious substitutions while preserving both order and length of the sequence. For all-key outputs, the input included alphanumeric and special keys (e.g., \texttt{Shift}, \texttt{Caps}, \texttt{Ctrl}), and the LLM was guided to reconstruct coherent sentences while respecting key semantics. Crucially, the prompts framed the inputs explicitly as predicted keypresses, not free text, and instructed the LLM to treat them as noisy model outputs to be repaired. Several prompt formulations were tested, and the versions described here consistently produced the best results, as they encouraged the LLM to correct systematic misclassifications in a way aligned with keystroke-level predictions rather than performing generic spell-checking. The full text of the prompts is provided in the Appendix.
 
 
 As an example, for the first sentence, including all keys on the keyboard, the best models predicted:
@@ -1191,31 +1165,31 @@ Following this example, a comparative analysis across all architectures is provi
 \cline{4-6}
        & & \textbf{No.}& \textbf{Raw}  &   \textbf{Gemini 2.5 Pro}   &  \textbf{GPT-OSS 120b} \\
 \hline
-\multirow{6}{*}{CoAtNet} & \multirow{3}{*}{Alphanumeric} & 1 & 1 & 0 & 1 \\
-& & 2 & 5 & 0 & 0 \\
-& & 3 & 0 & 0 & 0 \\
+\multirow{6}{*}{CoAtNet} & \multirow{3}{*}{Alphanumeric} & 1 & 4 & 0 & 0 \\
+& & 2 & 2 & 0.67 & 0.67 \\
+& & 3 & 1.33 & 0 & 0 \\
 \cline{2-6}
-& \multirow{3}{*}{All} & 1 & 1 & 0 & 1\\
-& & 2 & 3 & 0 & 5\\
-& & 3 & 0 & 0 & 0\\
+& \multirow{3}{*}{All} & 1 & 3 & 0.67 & 2\\
+& & 2 & 3.33 & 0 & 0\\
+& & 3 & 2 & 0 & 0.33\\
 \hline
 
-\multirow{6}{*}{MOAT} & \multirow{3}{*}{Alphanumeric} & 1 & 3 & 0 & 0 \\
-& & 2 & 3 & 0 & 0 \\
-& & 3 & 2 & 0 & 0 \\
+\multirow{6}{*}{MOAT} & \multirow{3}{*}{Alphanumeric} & 1 & 4.67 & 0 & 0.33 \\
+& & 2 & 4.67 & 0 & 0 \\
+& & 3 & 2.67 & 0 & 0 \\
 \cline{2-6}
-& \multirow{3}{*}{All} & 1 & 3 & 2 & 1\\
-& & 2 & 8 & 0 & 2 \\
-& & 3 & 3 & 0 & 0 \\
+& \multirow{3}{*}{All} & 1 & 6.67 & 0.67 & 6\\
+& & 2 & 3 & 0.33 & 0.33 \\
+& & 3 & 3 & 0 & 1.33 \\
 \hline
 
-\multirow{6}{*}{SwinTransformer} & \multirow{3}{*}{Alphanumeric} & 1 & 14 & 1 & 7 \\
-& & 2 & 7 & 0 & 0 \\
-& & 3 & 5 & 0 & 0 \\
+\multirow{6}{*}{SwinTransformer} & \multirow{3}{*}{Alphanumeric} & 1 & 12.33 & 1 & 3 \\
+& & 2 & 9 & 0 & 0.33 \\
+& & 3 & 9.67 & 0 & 0.33 \\
 \cline{2-6}
-& \multirow{3}{*}{All} & 1 & 10 & 1 & 6 \\
-& & 2 & 7 & 0 & 8 \\
-& & 3 & 7 & 0 & 8\\
+& \multirow{3}{*}{All} & 1 & 12 & 1 & 9 \\
+& & 2 & 7 & 0 & 0.33 \\
+& & 3 & 7 & 0 & 3 \\
 \hline
 \end{tabular}
 \end{adjustbox}
@@ -1224,7 +1198,7 @@ Following this example, a comparative analysis across all architectures is provi
 
 \vspace{1em}
 
-From the results, can be seen that while not perfect in every case, the predictions achieve satisfactorily low Levenshtein distances. In general, Gemini provides slightly better post-processing corrections than GPT-OSS, and both LLMs are generally able to correct residual errors, fully reconstructing the original keypress sequences.
+From the results, it can be seen that while not perfect in every case, the predictions achieve satisfactorily low Levenshtein distances. In general, Gemini provides slightly better post-processing corrections than GPT-OSS, and both LLMs are generally able to correct residual errors, fully reconstructing the original keypress sequences.
 
 \section{Real-World Simulation}
 
@@ -1242,8 +1216,8 @@ This section presents the evaluation of model performance under more realistic c
 \cline{5-9}
        &   \textbf{No.}  &   \textbf{Size}   &   & \textbf{All} & \textbf{Clean} & \textbf{Window} & \textbf{Dishwasher} & \textbf{Washing Machine}  \\
 \hline
-MOAT & 3 & - & 0.0062 & \textbf{81.09} & \textbf{95.0} & 69.16 & 82.41 & \textbf{78.70} \\
-CoAtNet & 4 & - & 0.0054 & 80.38 & \textbf{95.0} & \textbf{71.96} & \textbf{83.33} & 72.22 \\
+MOAT & 3 & - & 0.0062 & \textbf{81.09} & \textbf{95.00} & 69.16 & 82.41 & \textbf{78.70} \\
+CoAtNet & 4 & - & 0.0054 & 80.38 & \textbf{95.00} & \textbf{71.96} & \textbf{83.33} & 72.22 \\
 \hline
 \end{tabular}
 \end{adjustbox}
@@ -1262,7 +1236,7 @@ CoAtNet & 4 & - & 0.0054 & 80.38 & \textbf{95.0} & \textbf{71.96} & \textbf{83.3
        &   \textbf{No.}  &   \textbf{Size}   &   & \textbf{All} & \textbf{Clean} & \textbf{Window} & \textbf{Dishwasher} & \textbf{Washing Machine}  \\
 \hline
 MOAT & 4 & 16 & 0.0058 & \textbf{85.68} & \textbf{95.86} & \textbf{76.47} & \textbf{87.77} & \textbf{83.60} \\
-CoAtNet & 4 & - & 0.0057 & 84.72 & \textbf{95.27} & 74.87 & \textbf{87.77} & 82.01 \\
+CoAtNet & 4 & - & 0.0057 & 84.72 & 95.27 & 74.87 & \textbf{87.77} & 82.01 \\
 \hline
 \end{tabular}
 \end{adjustbox}
@@ -1324,7 +1298,7 @@ In contrast, when models are trained on noisy recordings and evaluated on clean 
 \multirow{2}{*}{Alphanumeric} & CoAtNet & 63.0 & 72.14 & 77.0 & 90.09 & 86.0 & 94.12 &  92.0 & 95.36 & 92.0 & 96.9 & 92.0 & 99.07\\
                               & MOAT & 58.0 & 71.83 & 70.0 & 85.76 & 80.0 & 90.4 &  85.0 & 93.19 & 85.0  & 95.67& 91.0 & 97.83\\
 \hline
-\multirow{2}{*}{All} & CoAtNet  & \textbf71.01 & 78.72 & 86.98 & 89.18 & 91.72 & 92.2 & 94.67 & 93.09 & 94.67 & 95.04 & 96.45 & 96.99 \\
+\multirow{2}{*}{All} & CoAtNet  & 71.01 & 78.72 & 86.98 & 89.18 & 91.72 & 92.2 & 94.67 & 93.09 & 94.67 & 95.04 & 96.45 & 96.99 \\
                     & MOAT    & 66.27 & 78.19 & 81.07 & 89.36 & 88.17 & 92.91 & 90.53 & 94.68 & 90.53 & 95.39 & 91.72 & 96.99 \\
 
 \hline
@@ -1403,7 +1377,7 @@ To further analyze classification performance and error patterns, confusion matr
   \label{fig:confusion_matrices_noisy_mac}
 \end{figure}
 
-From these matrices, the same pattern can be observed: while the majority of recordings are classified correctly, some misclassifications occur, particularly between keys located close to each other on the keyboard, such as 6 and 7, w and s, or k and j.
+From these matrices, the same pattern can be observed: while the majority of recordings are classified correctly, some misclassifications occur, particularly between keys located close to each other on the keyboard, pairs such as \texttt{(6, 7)}, \texttt{(w, s)}, or \texttt{(k, j)}.
 
 
 \chapter{Conclusions}
@@ -1417,6 +1391,16 @@ The real-world simulation highlighted the influence of noise and environmental v
 In summary, the results demonstrate that acoustic side-channel attacks can be highly effective under ideal conditions, but their performance in realistic, noisy environments depends strongly on the diversity and quality of the training data. Perfectly clean conditions are rare in everyday situations, which considerably reduces the practical risk of such attacks. The study highlights the importance of model architecture and scale: larger and well-regularized models consistently achieve the best predictive performance, yet their effectiveness is tied to the specificity of the training setup. Exposure to heterogeneous and noisy recordings improves generalization, allowing models to maintain reasonable accuracy even when faced with acoustic disturbances. Post-processing with large language models further enhances reconstruction by leveraging semantic context, but this improvement primarily reflects general language patterns rather than sensitive, case-specific information, such as passwords, which remain more difficult to predict. Despite these advances, certain keys are inherently more prone to misclassification due to acoustic similarity or physical proximity on the keyboard, underscoring intrinsic limitations of audio-based keystroke recognition. Overall, these findings provide a comprehensive view of the potential and constraints of neural-network-based acoustic attacks, while also informing practical defenses, such as noise injection, hardware modifications, or keyboard layout adjustments, to mitigate risk in realistic scenarios.
 
 \chapter{Future Work}
+
+The present study demonstrates that acoustic side-channel attacks based on keystroke sounds can be modeled and analyzed using neural networks, with post-processing aided by large language models. While the results are promising, several directions remain open for future exploration.
+
+First, the dataset used in this work was limited to recordings from built-in Mac keyboards. This constraint narrows the generalizability of the results, as different keyboards (e.g., mechanical, membrane, laptop chiclet from other manufacturers, ergonomic designs, or mobile on-screen keyboards) produce distinct acoustic signatures. Extending the dataset to cover a wider range of devices would make it possible to evaluate whether models trained on one keyboard type can generalize to others, or whether transfer learning and domain adaptation techniques are required. Such extensions would also allow for a more comprehensive study of robustness to variability in hardware and microphones.
+
+Another natural extension is live prediction. In this work, predictions were made on pre-recorded audio samples segmented into individual keystrokes. Moving toward a real-time system would introduce several new challenges: accurate detection of keypress and finding boundaries under noisy conditions. Moreover, such a system would need to remain robust to differences in typing styles and speeds, which can significantly alter the acoustic characteristics of keystrokes. Achieving this would bring the system closer to a practical side-channel attack scenario, while also offering insights into its limitations in real-world settings.
+
+In addition, future work could involve improving the integration of LLMs for error correction. Although the current prompts achieved strong results, they remain relatively rigid. Designing adaptive prompts that incorporate more contextual information, specifically editing keys (e.g., Enter, Delete, arrow keys), could further enhance reconstruction accuracy. This aspect was not extended in the present work, as the open-source models tested showed limited adaptability and were unable to reliably interpret such keys. Combining LLM post-processing with uncertainty estimates from the acoustic classifier might also yield more reliable corrections.
+
+With all these considerations in mind, future research could significantly advance and extend the findings of the current work.
 
 \printbibliography
 
@@ -1473,7 +1457,7 @@ SwinTransformer & 1 & 4 & 38.47 & 52.96 & 64.49 & 70.09 & 76.79 & 90.34 \\
 \hline
 CoAtNet & 3 & - & \textbf{90.94} & \textbf{97.02} & \textbf{98.19} & 98.58 & 98.84 & 99.48 \\
 CoAtNet & 4 & - & 90.82 & 96.64 & 97.80 & \textbf{98.58} & \textbf{98.97} & 99.35 \\
-MOAT & 3 & - & 89.65 & 96.38 & 98.06 & 98.45 & \textbf{98.58} & \textbf{99.61} \\
+MOAT & 3 & - & 89.65 & 96.38 & 98.06 & 98.45 & 98.58 & \textbf{99.61} \\
 MOAT & 1 & - & 87.71 & 94.70 & 97.41 & 98.32 & 98.84 & 99.35 \\
 MOAT & 3 & 8 & 86.03 & 94.44 & 96.64 & 97.67 & 98.06 & 98.84 \\
 MOAT & 1 & 8 & 85.77 & 93.79 & 96.38 & 97.67 & 98.19 & 99.09 \\
